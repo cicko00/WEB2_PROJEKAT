@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\WebShopAPI"
   ],
-  "SelectedNode": "\\WebShopAPI.sln",
+  "SelectedNode": "\\WebShopAPI\\obj",
   "PreviewInSolutionExplorer": false
 }
