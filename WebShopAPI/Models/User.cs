@@ -12,6 +12,7 @@
         public string UserType { get; set; }
         public string Image { get; set; }
         public bool Verified { get; set; } = false;
+        public bool Fbuser { get; set; } = false;
         public List<Order> CreatedOrders { get; set; }
         public List<Product> UserProducts { get; set; }
     }

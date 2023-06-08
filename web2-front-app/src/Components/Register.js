@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import './Styles/Register.css';
 import axios from 'axios';
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link,useNavigate } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import Login from './Login';
 import FacebookLogin from 'react-facebook-login';
@@ -92,13 +92,15 @@ const Register = ({ history }) => {
         }
 
         var res=await sendRequest(data);
-        if(res==="200"){
+        if(res.data===200){
         alert('USPEŠNA REGISTRACIJA!');
         
         navigate('/login');
         }
         else{
           alert(res.data);
+          console.log(res.data);
+          console.log(typeof res.data)
         }
       }
         
@@ -139,12 +141,13 @@ const Register = ({ history }) => {
     console.log(data);
       var result=await sendRequest(data);
 
-      if(result.data==="200"){
+      if(result.data=='200'){
       alert("USPESNA REGISTRACIJA!");
       navigate('/login');
       }
       else{
         alert(result.data);
+        console.log(result.data);
       }
     
       

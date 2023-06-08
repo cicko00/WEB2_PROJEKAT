@@ -27,23 +27,48 @@ namespace WebShopAPI.Services
 
         public string Login(UserCredentialsDto credentialsDto)
         {
-
-            UserCredentialsDto user = _mapper.Map<List<UserCredentialsDto>>(_dbContext.Users.ToList()).First(x => x.Email == credentialsDto.Email);
-
-            if(user == null)
+            UserDto user=null;
+            try
             {
-                return null;
+                 user = _mapper.Map<List<UserDto>>(_dbContext.Users.ToList()).First(x => x.Email == credentialsDto.Email);
             }
-            //BCrypt.Net.BCrypt.Verify(credentialsDto.Password, user.Password)
-            if (user.Password == credentialsDto.Password)
+            catch(Exception ex)
             {
+                return "!";
+            }
+            
+
+            
+
+            if (user.Fbuser!=true && !BCrypt.Net.BCrypt.Verify(credentialsDto.Password, user.Password))
+            {
+                return "!";
+            }
+
+            
+
+
+
+            
+            
+            
                 List<Claim> claims = new List<Claim>();
-                if (credentialsDto.UserType == "admin")
+                if (user.UserType == "admin")
                     claims.Add(new Claim(ClaimTypes.Role, "admin"));
-                if (credentialsDto.UserType == "seller")
+                if (user.UserType == "seller")
                     claims.Add(new Claim(ClaimTypes.Role, "seller"));
-                if (credentialsDto.UserType == "buyer")
+                if (user.UserType == "buyer")
                     claims.Add(new Claim(ClaimTypes.Role, "buyer"));
+                claims.Add(new Claim("UserName",user.UserName));
+                claims.Add(new Claim("Email", user.Email));
+                claims.Add(new Claim("FirstName", user.FirstName));
+                claims.Add(new Claim("LastName", user.LastName));
+                //claims.Add(new Claim("Address", user.Address));
+                claims.Add(new Claim("DateOfBirth",Convert.ToString( user.DateOfBirth)));
+                claims.Add(new Claim("Photo", user.Image));
+                claims.Add(new Claim("FbUser",Convert.ToString(user.Fbuser)));
+
+
 
                 SymmetricSecurityKey secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey.Value));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
@@ -51,16 +76,13 @@ namespace WebShopAPI.Services
                     issuer: "http://localhost:44398", //url servera koji je izdao token
                     claims: claims, //claimovi
                     expires: DateTime.Now.AddMinutes(20), //vazenje tokena u minutama
-                    signingCredentials: signinCredentials //kredencijali za potpis
+                    signingCredentials: signinCredentials
+                    //kredencijali za potpis
                     
                 );
                 string tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
                 return tokenString;
-            }
-            else
-            {
-                return null;
-            }
+           
         }
 
         public string AddUser(UserDto newUser)

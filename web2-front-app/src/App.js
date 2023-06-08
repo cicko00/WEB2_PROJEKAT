@@ -21,32 +21,41 @@ const App = () => {
   return (
     <Router>
       <nav className="navbar">
-        <ul className="nav-list">
-          <li className="nav-item">
-            <Link to="/" className="nav-link">Home</Link>
-          </li>
-          {!isLoggedIn && (
-            <>
+        <div className="navbar-container">
+          <Link to="/" className="navbar-logo">
+            My App
+          </Link>
+          <div className="nav-menu">
+            <ul className="nav-list">
               <li className="nav-item">
-                <Link to="/register" className="nav-link">Register</Link>
+                <Link to="/" className="nav-link">Home</Link>
               </li>
-              <li className="nav-item">
-                <Link to="/login" className="nav-link">Login</Link>
-              </li>
-            </>
-          )}
-          {isLoggedIn && (
-            <li className="nav-item">
-              <button onClick={handleLogout} className="nav-link">Logout</button>
-            </li>
-          )}
-        </ul>
+              {!isLoggedIn && (
+                <>
+                  <li className="nav-item">
+                    <Link to="/register" className="nav-link">Register</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/login" className="nav-link">Login</Link>
+                  </li>
+                </>
+              )}
+              {isLoggedIn && (
+                <li className="nav-item">
+  <Link to="/logout" className="logout-button" onClick={handleLogout}>
+    <span className="icon">⏚</span> Logout
+  </Link>
+</li>
+              )}
+            </ul>
+          </div>
+        </div>
       </nav>
       
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login onLogin={handleLogin} />} />
+        <Route path="/login" element={<Login handleLogin={handleLogin} />} />
       </Routes>
     </Router>
   );

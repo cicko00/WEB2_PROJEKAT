@@ -1,4 +1,5 @@
-﻿using WebShopAPI.Models;
+﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+using WebShopAPI.Models;
 
 namespace WebShopAPI.Dto
 {
@@ -15,5 +16,6 @@ namespace WebShopAPI.Dto
         public string Image { get; set; }
 
         public bool Fbuser { get; set; }
+        public string Address { get; set; }
     }
 }

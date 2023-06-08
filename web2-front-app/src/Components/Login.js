@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import './Styles/Login.css';
 import axios from 'axios';
+import {  useNavigate } from 'react-router-dom';
 
 const Login = ({handleLogin}) => {
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+   const navigate = useNavigate();
 
   const handleSubmit =async (e) => {
     e.preventDefault();
@@ -28,12 +31,15 @@ const Login = ({handleLogin}) => {
             password,
           };
     
-          axios.post('/api/login', userData)
+          axios.post('https://localhost:7108/api/users/login', userData)
             .then((response) => {
-              if(response==="OK"){
+              if(response.data!=="!"){
+                console.log(typeof(response));
                 handleLogin();
+                navigate('/');
               }
               else{
+                alert("PRIJAVA NIJE USPELA. PROVERITE VAŠE PODATKE!");
 
               }
               // Handle successful login
