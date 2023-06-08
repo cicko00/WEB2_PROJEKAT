@@ -13,5 +13,7 @@ namespace WebShopAPI.Dto
         public DateTime DateOfBirth { get; set; }
         public string UserType { get; set; }
         public string Image { get; set; }
+
+        public bool Fbuser { get; set; }
     }
 }

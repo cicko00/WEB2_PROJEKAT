@@ -6,7 +6,7 @@ namespace WebShopAPI.Interfaces
     {
         List<UserDto> GetUsers();
         UserDto GetById(int id);
-        UserDto AddUser(UserDto newUser);
+        string AddUser(UserDto newUser);
         UserDto UpdateUser(int id, UserDto newUserData);
         bool DeleteUser(int id);
 

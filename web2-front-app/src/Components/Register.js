@@ -1,103 +1,110 @@
-import React, { useState,useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import './Styles/Register.css';
 import axios from 'axios';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
-import Login from './Login'
-const Register = ({history}) => {
-  const [FirstName, setFirstName] = useState('');
-  const [LastName, setLastName] = useState('');
-  const [Email, setEmail] = useState('');
-  const [UserName, setUserName] = useState('');
-  const [Password, setPassword] = useState('');
+import Login from './Login';
+import FacebookLogin from 'react-facebook-login';
+
+const Register = ({ history }) => {
+  const navigate = useNavigate();
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
-  const [Address, setAddress] = useState('');
-  const [DateOfBirth, setDateOfBirth] = useState('');
-  const [UserType, setUserType] = useState('buyer');
+  const [address, setAddress] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [userType, setUserType] = useState('buyer');
   const [errors, setErrors] = useState({});
-  const [Image, setPhoto] = useState(null);
-    <Router>
-      <Routes>
-       
-        <Route path='/login' element={<Login/>} />
-      </Routes>
-    </Router>
+  const [image, setPhoto] = useState(null);
+  const [fbuser, setFbUser] = useState(false);
+
+  const data = {
+    firstName,
+    lastName,
+    email,
+    userName,
+    password,
+    address,
+    dateOfBirth,
+    userType,
+    image: '',
+    fbuser,
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Validation
     const validationErrors = {};
-    if (!FirstName) {
+    if (!firstName) {
       validationErrors.firstName = 'First Name is required';
     }
-    if (!LastName) {
+    if (!lastName) {
       validationErrors.lastName = 'Last Name is required';
     }
-    if (!Email) {
+    if (!email) {
       validationErrors.email = 'Email is required';
     }
-    if (!UserName) {
+    if (!userName) {
       validationErrors.userName = 'Username is required';
     }
-    if (!Password) {
+    if (!password) {
       validationErrors.password = 'Password is required';
     }
     if (!repeatPassword) {
       validationErrors.repeatPassword = 'Repeat Password is required';
     }
-    if (Password !== repeatPassword) {
+    if (password !== repeatPassword) {
       validationErrors.repeatPassword = 'Passwords must match';
     }
-    if (!Address) {
+    if (!address) {
       validationErrors.address = 'Address is required';
     }
-    if (!DateOfBirth) {
+    if (!dateOfBirth) {
       validationErrors.dateOfBirth = 'Date of Birth is required';
     }
+
+    
+
 
     // Set errors or submit form
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
-      try {
-        const data = {
-          FirstName,
-          LastName,
-          Email,
-          UserName,
-          Password,
-          Address,
-          DateOfBirth,
-          UserType,
-          Image:"aaaa",
-        };
+      
        
-        if (Image !="") {
+        if (image) {
           const reader = new FileReader();
-          reader.onloadend = () => {
-            const photoString = reader.result;
-            data.Image = photoString;
-            const response = sendRequest(data);
-            console.log(response.data);
-          };
-          reader.readAsDataURL(Image);
-          
-        
+          const filePromise = new Promise((resolve) => {
+            reader.onloadend = () => {
+              const photoString = reader.result;
+              data.image = photoString;
+              resolve(); // Resolve the promise once the image string is set
+            };
+          });
+          reader.readAsDataURL(image);
+
+          await filePromise; // Wait for the promise to be resolved
         }
 
-        console.log(data);
-        
-
-       
+        var res=await sendRequest(data);
+        if(res==="200"){
         alert('USPEŠNA REGISTRACIJA!');
         
-       
-      } catch (error) {
-        console.error(error);
-        alert('NEUSPEŠNA REGISTRACIJA!');
+        navigate('/login');
+        }
+        else{
+          alert(res.data);
+        }
       }
-    }
+        
+        
+      
+    
   };
 
   const photoFrameRef = useRef(null);
@@ -106,117 +113,176 @@ const Register = ({history}) => {
     setPhoto(file);
 
     const photoURL = URL.createObjectURL(file);
-  // Set the URL as the background image of the photo frame
-  photoFrameRef.current.style.backgroundImage = `url(${photoURL})`;
+    // Set the URL as the background image of the photo frame
+    photoFrameRef.current.style.backgroundImage = `url(${photoURL})`;
   };
 
-const sendRequest=async(data)=>{
-  return await axios.post('https://localhost:7108/api/users', data); 
-};
+  const sendRequest = async (data) => {
+    return await axios.post('https://localhost:7108/api/users', data);
+  };
 
-  return (
+  const responseFacebook = async(response) => {
+    const { name, email, picture  } = response;
+    data.firstName=(name.split(' ')[0]);
+    data.lastName=(name.split(' ')[1]);
+    data.email=(email);
+    data.userName=(email);
+    data.dateOfBirth=undefined;
     
+    
+    if (picture && picture.data && picture.data.url) {
+      const photoURL = picture.data.url;
+      // Set the URL as the background image of the photo frame
+      photoFrameRef.current.style.backgroundImage = `url(${photoURL})`;
+    }
+    data.fbuser=(true);
+    console.log(data);
+      var result=await sendRequest(data);
+
+      if(result.data==="200"){
+      alert("USPESNA REGISTRACIJA!");
+      navigate('/login');
+      }
+      else{
+        alert(result.data);
+      }
+    
+      
+    
+      
+      
+    
+    
+    
+  };
+
+  return(
     <div className="register-container">
       <div className="register-form">
         <h1 className="title">Register</h1>
         <form onSubmit={handleSubmit}>
-          <div>
+          <div className="form-group">
             <input
               type="text"
               placeholder="First Name"
-              value={FirstName}
+              value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
             {errors.firstName && <p className="error">{errors.firstName}</p>}
           </div>
-          <div>
+          <div className="form-group">
             <input
               type="text"
               placeholder="Last Name"
-              value={LastName}
+              value={lastName}
               onChange={(e) => setLastName(e.target.value)}
             />
             {errors.lastName && <p className="error">{errors.lastName}</p>}
           </div>
-          <div>
+          <div className="form-group">
             <input
               type="email"
               placeholder="Email"
-              value={Email}
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             {errors.email && <p className="error">{errors.email}</p>}
           </div>
-          <div>
+          <div className="form-group">
             <input
               type="text"
               placeholder="Username"
-              value={UserName}
+              value={userName}
               onChange={(e) => setUserName(e.target.value)}
             />
             {errors.userName && <p className="error">{errors.userName}</p>}
           </div>
-          <div>
+          <div className="form-group">
             <input
               type="password"
               placeholder="Password"
-              value={Password}
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
             {errors.password && <p className="error">{errors.password}</p>}
           </div>
-          <div>
+          <div className="form-group">
             <input
               type="password"
               placeholder="Repeat Password"
               value={repeatPassword}
               onChange={(e) => setRepeatPassword(e.target.value)}
             />
-            {errors.repeatPassword && <p className="error">{errors.repeatPassword}</p>}
+            {errors.repeatPassword && (
+              <p className="error">{errors.repeatPassword}</p>
+            )}
           </div>
-          <div>
+          <div className="form-group">
             <input
               type="text"
               placeholder="Address"
-              value={Address}
+              value={address}
               onChange={(e) => setAddress(e.target.value)}
             />
             {errors.address && <p className="error">{errors.address}</p>}
           </div>
-          <div>
+          <div className="form-group">
             <input
               type="date"
               placeholder="Date of Birth"
-              value={DateOfBirth}
+              value={dateOfBirth}
               onChange={(e) => setDateOfBirth(e.target.value)}
             />
-            {errors.dateOfBirth && <p className="error">{errors.dateOfBirth}</p>}
+            {errors.dateOfBirth && (
+              <p className="error">{errors.dateOfBirth}</p>
+            )}
           </div>
-          <div>
+          <div className="form-group">
             <p></p>
             <label htmlFor="role">Role:</label>
-            <select id="role" value={UserType} onChange={(e) => setUserType(e.target.value)}>
+            <select
+              id="role"
+              value={userType}
+              onChange={(e) => setUserType(e.target.value)}
+            >
               <option value="buyer">Buyer</option>
               <option value="seller">Seller</option>
             </select>
           </div>
-          <p></p>
-          <label htmlFor="role">Set Profile Photo:</label>
-          <div className="photo-container">
-            <div className="photo-frame"  ref={photoFrameRef} >
-              <label htmlFor="photo-upload" className="photo-label">
-                <span className="plus-icon">+</span>
-              </label>
+          <div className="form-group">
+            <p></p>
+            <label htmlFor="photo-upload">Set Profile Photo:</label>
+            <div className="photo-container">
+              <div className="photo-frame" ref={photoFrameRef}>
+                <label htmlFor="photo-upload" className="photo-label">
+                  <span className="plus-icon">+</span>
+                </label>
+              </div>
+              <input
+                type="file"
+                id="photo-upload"
+                accept="image/*"
+                onChange={handlePhotoChange}
+              />
             </div>
-            <input
-              type="file"
-              id="photo-upload"
-              accept="image/*"
-              onChange={handlePhotoChange}
-            />
           </div>
           <button type="submit">Register</button>
         </form>
+        <p className="register-link">
+          Already have an account? <Link to="/login">Log in</Link>
+        </p>
+        <div className="or-divider">
+          <div className="or-line"></div>
+          <div className="or-text">or</div>
+          <div className="or-line"></div>
+        </div>
+        <FacebookLogin
+          appId="972429670447706"
+          fields="name,email,picture"
+          callback={responseFacebook}
+          cssClass="facebook-button"
+          textButton="Register with Facebook"
+        />
       </div>
     </div>
   );

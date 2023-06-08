@@ -10,7 +10,7 @@ using WebShopAPI.Interfaces;
 using WebShopAPI.Models;
 
 namespace WebShopAPI.Services
-{
+{  
     public class UserService : IUserService
     {
         private readonly IMapper _mapper;
@@ -63,23 +63,44 @@ namespace WebShopAPI.Services
             }
         }
 
-        public UserDto AddUser(UserDto newUser)
+        public string AddUser(UserDto newUser)
         {
-      
-           
-            foreach(UserDto u in _mapper.Map<List<UserDto>>(_dbContext.Users.ToList()))
+
+            if (newUser.Fbuser == true)
             {
-                if(BCrypt.Net.BCrypt.Verify(newUser.Password, u.Password) || newUser.Email==u.Email || newUser.UserName == u.UserName)
+                foreach (UserDto u in _mapper.Map<List<UserDto>>(_dbContext.Users.ToList()))
                 {
-                    return null;
-                } 
+                    if (newUser.Email == u.Email)
+                    {
+                        return "YOU ARE ALREADY REGISTERED";
+                    }
+                }
+
+            }
+            else
+            {
+                foreach (UserDto u in _mapper.Map<List<UserDto>>(_dbContext.Users.ToList()))
+                {
+                    if (BCrypt.Net.BCrypt.Verify(newUser.Password, u.Password))
+                    {
+                        return "PASSWORD ALREADY EXISTS";
+                    }
+                    else if(newUser.Email == u.Email)
+                    {
+                        return "EMAIL ALREADY EXISTS";
+                    }
+                    else if(newUser.UserName == u.UserName)
+                    {
+                        return "USERNAME ALREADY EXISTS";
+                    }
+                }
             }
             newUser.Password=BCrypt.Net.BCrypt.HashPassword(newUser.Password);
             User user = _mapper.Map<User>(newUser);
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
-
-            return _mapper.Map<UserDto>(newUser);  
+            return "OK";
+              
         }
 
         public bool DeleteUser(int id)

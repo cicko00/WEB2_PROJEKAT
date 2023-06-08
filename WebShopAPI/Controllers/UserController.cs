@@ -5,12 +5,14 @@ using WebShopAPI.Interfaces;
 
 namespace WebShopAPI.Controllers
 {
+    
     [Route("api/users")]
     [ApiController]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-           
+
+        public static string ER_Message="";
 
 
 
@@ -40,11 +42,13 @@ namespace WebShopAPI.Controllers
         [HttpPost]
         public IActionResult CreateUser([FromBody] UserDto user)
         {
-            if (_userService.AddUser(user) == null)
+            string i = _userService.AddUser(user);
+            if (i != "OK")
             {
-                return BadRequest("ERROR");
+                
+                return Ok(i);
             }
-            return Ok();
+            return Ok("200");
         }
 
         [HttpPut("{id}")]
