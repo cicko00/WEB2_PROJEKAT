@@ -1,0 +1,43 @@
+/* App.css */
+body {
+  background-color: #222;
+  color: #ffd700;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  background-color: #333;
+  padding: 10px;
+}
+
+.nav-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-item {
+  margin: 0 10px;
+}
+
+.nav-link {
+  color: #ffd700;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.nav-link:hover {
+  background-color: #444;
+}
+
+.nav-link.active {
+  background-color: #ffd700;
+  color: #222;
+}

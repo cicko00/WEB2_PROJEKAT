@@ -1,0 +1,12 @@
+/* Home.css */
+.home-container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .title {
+    color: #ffd700;
+    font-size: 36px;
+    margin-bottom: 20px;
+  }
+  
