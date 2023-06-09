@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './Components/Home';
 import Register from './Components/Register';
 import Login from './Components/Login';
+import Profile from './Components/Profile';
 import './App.css';
 
 const App = () => {
@@ -41,11 +42,16 @@ const App = () => {
                 </>
               )}
               {isLoggedIn && (
-                <li className="nav-item">
-  <Link to="/logout" className="logout-button" onClick={handleLogout}>
-    <span className="icon">⏚</span> Logout
-  </Link>
-</li>
+                <>
+                  <li className="nav-item">
+                    <Link to="/profile" className="nav-link">Profile</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/logout" className="logout-button" onClick={handleLogout}>
+                      <span className="icon">⏚</span> Logout
+                    </Link>
+                  </li>
+                </>
               )}
             </ul>
           </div>
@@ -54,8 +60,11 @@ const App = () => {
       
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/register" element={<Register handleLogin={handleLogin}/>} />
         <Route path="/login" element={<Login handleLogin={handleLogin} />} />
+        {isLoggedIn && (
+          <Route path="/profile" element={<Profile />} />
+        )}
       </Routes>
     </Router>
   );

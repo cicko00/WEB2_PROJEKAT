@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Styles/Login.css';
 import axios from 'axios';
 import {  useNavigate } from 'react-router-dom';
+import {decodeJWTToken} from '../Services/JwtDecodeService'
 
 const Login = ({handleLogin}) => {
   
@@ -36,6 +37,9 @@ const Login = ({handleLogin}) => {
               if(response.data!=="!"){
                 console.log(typeof(response));
                 handleLogin();
+                
+                decodeJWTToken(response.data);
+                console.log(sessionStorage["User"]);
                 navigate('/');
               }
               else{
@@ -44,7 +48,7 @@ const Login = ({handleLogin}) => {
               }
               // Handle successful login
               
-              console.log(response.data);
+              
             })
             .catch((error) => {
               // Handle login error

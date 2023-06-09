@@ -53,12 +53,10 @@ namespace WebShopAPI.Services
             
             
                 List<Claim> claims = new List<Claim>();
-                if (user.UserType == "admin")
-                    claims.Add(new Claim(ClaimTypes.Role, "admin"));
-                if (user.UserType == "seller")
-                    claims.Add(new Claim(ClaimTypes.Role, "seller"));
-                if (user.UserType == "buyer")
-                    claims.Add(new Claim(ClaimTypes.Role, "buyer"));
+                
+                claims.Add(new Claim("UserType",user.UserType));
+                
+                   
                 claims.Add(new Claim("UserName",user.UserName));
                 claims.Add(new Claim("Email", user.Email));
                 claims.Add(new Claim("FirstName", user.FirstName));
@@ -90,13 +88,31 @@ namespace WebShopAPI.Services
 
             if (newUser.Fbuser == true)
             {
-                foreach (UserDto u in _mapper.Map<List<UserDto>>(_dbContext.Users.ToList()))
+                if(newUser.Email != null && newUser.Email.Trim() !="") 
                 {
-                    if (newUser.Email == u.Email)
+                    UserCredentialsDto usr = new UserCredentialsDto();
+                    usr.Email = newUser.Email;
+                    usr.Password = "";
+
+                    foreach (UserDto u in _mapper.Map<List<UserDto>>(_dbContext.Users.ToList()))
                     {
-                        return "YOU ARE ALREADY REGISTERED";
+                        if (newUser.Email == u.Email)
+                        {
+                            
+                            
+                            return Login(usr);
+                        }
                     }
+                    newUser.Password = BCrypt.Net.BCrypt.HashPassword(newUser.Password);
+                    User userr = _mapper.Map<User>(newUser);
+                    _dbContext.Users.Add(userr);
+                    _dbContext.SaveChanges();
+                    return Login(usr);
+
                 }
+
+                return "UNABLE TO REGISTER VIA FACEBOOK. TRY OPENING NEW ACCOUNT";
+                
 
             }
             else

@@ -5,8 +5,9 @@ import { BrowserRouter as Router, Routes, Route, Link,useNavigate } from 'react-
 import { withRouter } from 'react-router-dom';
 import Login from './Login';
 import FacebookLogin from 'react-facebook-login';
+import {decodeJWTToken} from '../Services/JwtDecodeService'
 
-const Register = ({ history }) => {
+const Register = ({handleLogin}) => {
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -95,6 +96,7 @@ const Register = ({ history }) => {
         if(res.data===200){
         alert('USPEŠNA REGISTRACIJA!');
         
+        
         navigate('/login');
         }
         else{
@@ -130,20 +132,33 @@ const Register = ({ history }) => {
     data.email=(email);
     data.userName=(email);
     data.dateOfBirth=undefined;
-    
+    data.fbuser=(true);
     
     if (picture && picture.data && picture.data.url) {
       const photoURL = picture.data.url;
       // Set the URL as the background image of the photo frame
       photoFrameRef.current.style.backgroundImage = `url(${photoURL})`;
     }
-    data.fbuser=(true);
-    console.log(data);
-      var result=await sendRequest(data);
+    
+    
+    var result=await sendRequest(data);
 
-      if(result.data=='200'){
-      alert("USPESNA REGISTRACIJA!");
-      navigate('/login');
+      if(result.data.length > 30){
+      
+      
+      var i=decodeJWTToken(result.data);
+      
+      if(i===null){
+        alert("SOMETHING WENT WRONG!");
+      }
+      else{
+        handleLogin();
+        alert("USPESNA REGISTRACIJA!");
+        navigate('/');
+      }
+
+
+      
       }
       else{
         alert(result.data);
