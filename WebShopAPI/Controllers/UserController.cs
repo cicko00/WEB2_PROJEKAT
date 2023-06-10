@@ -34,9 +34,10 @@ namespace WebShopAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult Get(string id)
         {
-            return Ok(_userService.GetById(id));
+            int ID=Convert.ToInt32(id);
+            return Ok(_userService.GetById(ID));
         }
 
         [HttpPost]

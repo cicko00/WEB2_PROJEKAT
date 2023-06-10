@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Styles/ChangeProfileInfo.css'
-
+import axios from 'axios';
 const ChangeProfileInfo = ({ user, onSave, onCancel }) => {
   const [updatedUser, setUpdatedUser] = useState(user);
 
@@ -12,7 +12,16 @@ const ChangeProfileInfo = ({ user, onSave, onCancel }) => {
     }));
   };
 
-  const handleSave = () => {
+  const handleSave = async() => {
+    try{
+       updatedUser.dateOfBirth=(new Date(updatedUser.dateOfBirth)).toISOString();
+       console.log(new Date(updatedUser.dateOfBirth));
+        
+    await axios.put('https://localhost:7108/api/users/'+user.userId, updatedUser);
+    }
+    catch(error){
+        alert("SOMETHING WENT WRONG!");
+    }
     onSave(updatedUser);
   };
 
@@ -24,27 +33,27 @@ const ChangeProfileInfo = ({ user, onSave, onCancel }) => {
     <div className="change-profile-info">
       <div className="form-field">
         <label>Username:</label>
-        <input type="text" name="UserName" value={updatedUser.UserName} onChange={handleChange} />
+        <input type="text" name="userName" value={updatedUser.userName} onChange={handleChange} />
       </div>
       <div className="form-field">
         <label>First Name:</label>
-        <input type="text" name="FirstName" value={updatedUser.FirstName} onChange={handleChange} />
+        <input type="text" name="firstName" value={updatedUser.firstName} onChange={handleChange} />
       </div>
       <div className="form-field">
         <label>Last Name:</label>
-        <input type="text" name="LastName" value={updatedUser.LastName} onChange={handleChange} />
+        <input type="text" name="lastName" value={updatedUser.lastName} onChange={handleChange} />
       </div>
       <div className="form-field">
         <label>Email:</label>
-        <input type="email" name="Email" value={updatedUser.Email} onChange={handleChange} />
+        <input type="email" name="email" value={updatedUser.email} onChange={handleChange} />
       </div>
       <div className="form-field">
         <label>Date of Birth:</label>
-        <input type="date" name="DateOfBirth" value={updatedUser.DateOfBirth} onChange={handleChange} />
+        <input type="date" name="dateOfBirth" value={updatedUser.dateOfBirth} onChange={handleChange} />
       </div>
       <div className="form-field">
         <label>Address:</label>
-        <input type="text" name="Address" value={updatedUser.Address} onChange={handleChange} />
+        <input type="text" name="address" value={updatedUser.address} onChange={handleChange} />
       </div>
       <div className="buttons">
         <button className="save-button" onClick={handleSave}>

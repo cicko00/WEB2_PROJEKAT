@@ -1,26 +1,28 @@
 export class User {
     constructor(
-      UserName,
-      Password,
-      FirstName,
-      LastName,
-      DateOfBirth,
-      Address,
-      Email,
-      PhotoString,
+      UserId="",
+      UserName="",
+      Password="",
+      FirstName="",
+      LastName="",
+      DateOfBirth="",
+      Address="",
+      Email="",
+      Image="",
       FbUser,
-      UserType
+      UserType=""
     ) {
-      this.UserName = UserName;
-      this.Password = Password;
-      this.FirstName = FirstName;
-      this.LastName = LastName;
-      this.DateOfBirth = DateOfBirth;
-      this.Address = Address;
-      this.Email = Email;
-      this.PhotoString = PhotoString;
-      this.FbUser = FbUser;
-      this.UserType = UserType;
+      this.userId=UserId;
+      this.userName = UserName;
+      this.password = Password;
+      this.firstName = FirstName;
+      this.lastName = LastName;
+      this.dateOfBirth = DateOfBirth;
+      this.address = Address;
+      this.email = Email;
+      this.image = Image;
+      this.fbUser = FbUser;
+      this.userType = UserType;
     }
   }
   export default User;

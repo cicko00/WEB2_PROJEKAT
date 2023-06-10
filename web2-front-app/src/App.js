@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './Components/Home';
 import Register from './Components/Register';
 import Login from './Components/Login';
 import Profile from './Components/Profile';
+import {RolePicker} from './Services/RolePicker' 
 import './App.css';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isNavbarVisible, setIsNavbarVisible] = useState(true);
 
   const handleLogin = () => {
     // Perform login logic and set isLoggedIn to true
@@ -19,12 +21,25 @@ const App = () => {
     setIsLoggedIn(false);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const isTop = window.scrollY < 1000;
+      setIsNavbarVisible(isTop);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <Router>
-      <nav className="navbar">
+      <nav className={`navbar ${isNavbarVisible ? 'navbar-visible' : ''}`}>
         <div className="navbar-container">
           <Link to="/" className="navbar-logo">
-            My App
+            Fragrances.com
           </Link>
           <div className="nav-menu">
             <ul className="nav-list">
@@ -41,6 +56,25 @@ const App = () => {
                   </li>
                 </>
               )}
+
+              {isLoggedIn && RolePicker().isSeller(
+                <>
+                  <li className="nav-item">
+                    <Link to="/addProduct" className="nav-link">Add Product</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/showProducts" className="nav-link">Show My Products</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/newOrders" className="nav-link">New Orders</Link>
+                  </li>
+
+                  <li className="nav-item">
+                    <Link to="/ordersHistory" className="nav-link">Orders History</Link>
+                  </li>
+                </>
+              )}
+
               {isLoggedIn && (
                 <>
                   <li className="nav-item">
@@ -57,7 +91,7 @@ const App = () => {
           </div>
         </div>
       </nav>
-      
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register handleLogin={handleLogin}/>} />

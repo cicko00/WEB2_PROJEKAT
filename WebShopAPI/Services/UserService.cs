@@ -55,13 +55,13 @@ namespace WebShopAPI.Services
                 List<Claim> claims = new List<Claim>();
                 
                 claims.Add(new Claim("UserType",user.UserType));
-                
-                   
+
+               claims.Add(new Claim("UserId",Convert.ToString( user.UserId)));   
                 claims.Add(new Claim("UserName",user.UserName));
                 claims.Add(new Claim("Email", user.Email));
                 claims.Add(new Claim("FirstName", user.FirstName));
                 claims.Add(new Claim("LastName", user.LastName));
-                //claims.Add(new Claim("Address", user.Address));
+                claims.Add(new Claim("Password", user.Password));
                 claims.Add(new Claim("DateOfBirth",Convert.ToString( user.DateOfBirth)));
                 claims.Add(new Claim("Photo", user.Image));
                 claims.Add(new Claim("FbUser",Convert.ToString(user.Fbuser)));
@@ -92,14 +92,15 @@ namespace WebShopAPI.Services
                 {
                     UserCredentialsDto usr = new UserCredentialsDto();
                     usr.Email = newUser.Email;
-                    usr.Password = "";
+                    usr.Password = " ";
 
                     foreach (UserDto u in _mapper.Map<List<UserDto>>(_dbContext.Users.ToList()))
                     {
                         if (newUser.Email == u.Email)
                         {
-                            
-                            
+
+                           
+
                             return Login(usr);
                         }
                     }
@@ -168,14 +169,33 @@ namespace WebShopAPI.Services
 
         public UserDto UpdateUser(int id, UserDto newUserData)
         {
+            
             User user = _dbContext.Users.Find(id);
-            user.UserName = newUserData.UserName;
-            user.Email = newUserData.Email;
-            user.Password = newUserData.Password;
-            user.FirstName = newUserData.FirstName;
-            user.LastName = newUserData.LastName;
-            user.DateOfBirth = newUserData.DateOfBirth;
-            user.Image= newUserData.Image;
+            if (newUserData.Password == user.Password)
+            {
+                user.UserName = newUserData.UserName;
+                user.Email = newUserData.Email;
+                user.Password = newUserData.Password;
+                user.FirstName = newUserData.FirstName;
+                user.LastName = newUserData.LastName;
+                user.DateOfBirth = newUserData.DateOfBirth;
+                user.Image = newUserData.Image;
+            }
+            else
+            {
+                if(user.Password==newUserData.OldPassword)
+                {
+                    if (_mapper.Map<List<UserDto>>(_dbContext.Users.ToList()).Any(usr => usr.Password == BCrypt.Net.BCrypt.HashPassword(newUserData.Password)))
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        user.Password = BCrypt.Net.BCrypt.HashPassword(newUserData.Password);
+                    }
+                }
+            }
+           
            
             _dbContext.SaveChanges();
 

@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import Login from './Login';
 import FacebookLogin from 'react-facebook-login';
 import {decodeJWTToken} from '../Services/JwtDecodeService'
+import {setFbPhoto} from "../Services/SetPhotoFbUserService"
 
 const Register = ({handleLogin}) => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const Register = ({handleLogin}) => {
   const [fbuser, setFbUser] = useState(false);
 
   const data = {
+    userId: 0,
     firstName,
     lastName,
     email,
@@ -126,6 +128,10 @@ const Register = ({handleLogin}) => {
   };
 
   const responseFacebook = async(response) => {
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    
     const { name, email, picture  } = response;
     data.firstName=(name.split(' ')[0]);
     data.lastName=(name.split(' ')[1]);
@@ -147,6 +153,7 @@ const Register = ({handleLogin}) => {
       
       
       var i=decodeJWTToken(result.data);
+      setFbPhoto(picture.data.url);
       
       if(i===null){
         alert("SOMETHING WENT WRONG!");
