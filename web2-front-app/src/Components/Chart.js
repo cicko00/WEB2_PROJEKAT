@@ -1,25 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import './Styles/Chart.css';
 import { Product } from '../Models/Product';
 import { Order } from '../Models/Order';
+import moment from 'moment';
 
 const Chart = ({ chartItems, setChartItems, isLoggedIn }) => {
   const user = JSON.parse(sessionStorage['User']);
   const [comment, setComment] = useState('Bez napomene');
   const [address, setAddress] = useState('Bez napomene');
   let [orderDate, setOrderDate] = useState(null);
+  var [price,setPrice]=useState(0);
+
+  useEffect(() => {
+    let totalPrice = 0;
+       chartItems.forEach((item) => {
+      totalPrice += item.quantity * item.price;
+    });
+    
+    setPrice(totalPrice);
+  }, []);
+
 
   const handleOrder = async () => {
     try {
       // Prepare the order data
+      
       const orderData = {
         // Add necessary properties for the order (e.g., comment, address, etc.)
         // based on your requirements
         products: chartItems.map((item) => new Product(item.productId, item.name, item.description, item.price, item.quantity, item.image, item.sellertId, item.category)),
       };
-      orderDate=new Date().toISOString();
-      const order = new Order(0, comment, address, orderDate, orderData.products, user.userId);
+
+      
+
+
+      orderDate=moment().format();
+      const order = new Order(0, comment, address, orderDate, orderData.products, user.userId,null,price);
       console.log(order)
       // Make a POST request to send the order data to the backend
       const response = await axios.post('https://localhost:7108/api/orders', order);
@@ -83,7 +100,7 @@ const Chart = ({ chartItems, setChartItems, isLoggedIn }) => {
               placeholder="Enter address"
             />
           </div>
-         
+          <p>Order price: ${price}</p>
           <button className="order-button" onClick={handleOrder}>
             Order
           </button>

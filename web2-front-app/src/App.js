@@ -9,6 +9,8 @@ import {PickRole} from './Services/RolePicker'
 import './App.css';
 import ShowMyProducts from './Components/ShowMyProducts';
 import Chart from './Components/Chart';
+import ActiveOrders from './Components/ActiveOrders';
+import OrderHistory from './Components/OrderHistory';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -123,6 +125,8 @@ const App = () => {
         <Route path="/login" element={<Login handleLogin={handleLogin} setUserType={setUserType}  />} />
         <Route path="/addProduct" element={<AddProduct/>} />
         <Route path="/showProducts" element={<ShowMyProducts/>} />
+        <Route path="/activeOrders" element={<ActiveOrders/>} />
+        <Route path="/OrderHistory" element={<OrderHistory/>} />
         <Route path="/chart" element={<Chart setChartItems={setChartItems} chartItems={chartItems} isLoggedIn={isLoggedIn}/>} />
         {isLoggedIn && (
           

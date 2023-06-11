@@ -11,5 +11,7 @@ namespace WebShopAPI.Dto
         public DateTime OrderDate { get; set; }
         public List<ProductDto> Products { get; set; }
         public int UserBuyerId { get; set; }
+        public DateTime? ShipmentTime { get; set; }
+        public int Price { get; set; }
     }
 }

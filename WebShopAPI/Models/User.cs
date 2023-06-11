@@ -11,7 +11,7 @@
         public DateTime DateOfBirth { get; set; }
         public string UserType { get; set; }
         public string Image { get; set; }
-        public bool Verified { get; set; } = false;
+        public int Verified { get; set; } = 1;
         public bool Fbuser { get; set; } = false;
         public string? Address { get; set; }
         public List<Order> CreatedOrders { get; set; }

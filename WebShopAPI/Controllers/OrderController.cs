@@ -22,8 +22,8 @@ namespace WebShopAPI.Controllers
             return Ok(_orderService.GetOrders());
         }
 
-        [HttpGet("{userid}")]
-        public IActionResult GetUserProducts()
+        [HttpGet("user/{userid}")]
+        public IActionResult GetUserProducts(int userid)
         {
             return Ok(_orderService.GetOrders());
         }
@@ -38,6 +38,12 @@ namespace WebShopAPI.Controllers
         public IActionResult CreateOrder([FromBody] OrderDto order)
         {
             return Ok(_orderService.AddOrder(order));
+        }
+
+        [HttpPost("{st}/{ot}")]
+        public IActionResult CreateOrderTest([FromBody] OrderDto order,DateTime st,DateTime ot)
+        {
+            return Ok(_orderService.AddOrder(order,st,ot));
         }
 
         [HttpPut("{id}")]

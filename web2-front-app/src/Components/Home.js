@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import './Styles/Home.css';
 import axios from 'axios';
 import { PickRole } from '../Services/RolePicker';
+import moment from 'moment';
 
 const Home = ({ isLoggedIn,setChartItems,chartItems }) => {
   const [articles, setArticles] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [selectedQuantity, setSelectedQuantity] = useState(1);
+  const [selectedQuantity, setSelectedQuantity] = useState(0);
 
   useEffect(() => {
+   
     fetchArticles();
   }, []);
 
@@ -59,6 +61,9 @@ const Home = ({ isLoggedIn,setChartItems,chartItems }) => {
   };
 
   const addToChart = (product) => {
+    if(selectedQuantity===0){
+      return;
+    }
     const productToAdd = {
       ...product,
       quantity: selectedQuantity,
@@ -116,7 +121,7 @@ const Home = ({ isLoggedIn,setChartItems,chartItems }) => {
                   <div className="quantity-picker">
                     <button
                       onClick={() =>
-                        setSelectedQuantity((prevQuantity) => Math.max(prevQuantity - 1, 1))
+                        setSelectedQuantity((prevQuantity) => Math.max(prevQuantity - 1, 0))
                       }
                     >
                       -
@@ -144,7 +149,9 @@ const Home = ({ isLoggedIn,setChartItems,chartItems }) => {
                       +
                     </button>
                   </div>
+                  
                   <button onClick={() => addToChart(selectedProduct)}>Add to Cart</button>
+                    
                 </>
               )}
               <button onClick={closeProductDetails}>Close</button>

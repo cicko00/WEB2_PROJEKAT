@@ -1,6 +1,6 @@
 export class User {
     constructor(
-      UserId="",
+      UserId=0,
       UserName="",
       Password="",
       FirstName="",

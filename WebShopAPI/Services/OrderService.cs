@@ -44,13 +44,22 @@ namespace WebShopAPI.Services
                 }
             }
 
-            
+            Random random = new Random();
+            DateTime now = DateTime.Now;
+            DateTime futureDate = now.AddDays(15);
+            int totalMinutes = (int)(futureDate - now).TotalMinutes;
+            int randomMinutes = random.Next(totalMinutes);
+            DateTime randomTime = now.AddMinutes(randomMinutes);
+
+
             Order o = new Order();
             o.Address = newOrder.Address;
             o.OrderDate = newOrder.OrderDate;
             o.UserBuyerId = newOrder.UserBuyerId;
             o.OrderProducts = orderProducts;
             o.Comment= newOrder.Comment;
+            o.ShipmentTime = randomTime;
+            o.Price=newOrder.Price;
 
             
 
@@ -59,6 +68,8 @@ namespace WebShopAPI.Services
 
             return "OK";
         }
+
+
 
         public bool DeleteOrder(int id)
         {
@@ -87,6 +98,12 @@ namespace WebShopAPI.Services
             return _mapper.Map<List<OrderDto>>(_dbContext.Orders.ToList());
         }
 
+        public List<OrderDto> GetOrders(int userid)
+        {
+            List<OrderDto> orders =_mapper.Map<List<OrderDto>>(_dbContext.Orders.ToList()).Where(x=>x.UserBuyerId==userid).ToList();
+            return orders;
+        }
+
         public OrderDto UpdateOrder(int id, OrderDto newOrderData)
         {
             Order order = _dbContext.Orders.Find(id);
@@ -96,5 +113,66 @@ namespace WebShopAPI.Services
             _dbContext.SaveChanges();
             return _mapper.Map<OrderDto>(order);
         }
+
+
+
+
+
+
+
+
+
+
+        public string AddOrder(OrderDto newOrder,DateTime st,DateTime ot)
+        {
+            List<Product> productsFromReact = _mapper.Map<List<Product>>(newOrder.Products);
+            List<Product> productsFromDatabase = _dbContext.Products.ToList();
+            List<OrderProduct> orderProducts = new List<OrderProduct>();
+
+            foreach (Product productReact in productsFromReact)
+            {
+                Product matchingProduct = productsFromDatabase.FirstOrDefault(p => p.ProductId == productReact.ProductId);
+                if (matchingProduct != null)
+                {
+                    if (productReact.Quantity > matchingProduct.Quantity)
+                    {
+                        return "ERROR";
+                    }
+                    else
+                    {
+                        matchingProduct.Quantity -= productReact.Quantity;
+                        // Update the quantity in the database
+                        _dbContext.Entry(matchingProduct).Property("Quantity").IsModified = true;
+                        orderProducts.Add(new OrderProduct() { ProductId = matchingProduct.ProductId, Quantity = productReact.Quantity });
+                    }
+                }
+            }
+
+            
+
+
+            Order o = new Order();
+            o.Address = newOrder.Address;
+            o.OrderDate = newOrder.OrderDate;
+            o.UserBuyerId = newOrder.UserBuyerId;
+            o.OrderProducts = orderProducts;
+            o.Comment = newOrder.Comment;
+            o.ShipmentTime = (DateTime)newOrder.ShipmentTime;
+            o.Price = newOrder.Price;
+
+
+
+            _dbContext.Orders.Add(o);
+            _dbContext.SaveChanges();
+
+            return "OK";
+        }
+
+
+
+
+
+
+
     }
 }

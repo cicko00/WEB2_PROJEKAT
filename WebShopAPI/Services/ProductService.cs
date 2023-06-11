@@ -76,6 +76,15 @@ namespace WebShopAPI.Services
             return lp;
         }
 
+        public List<ProductDto> GetProducts(int orderid)
+        {
+            var products = _dbContext.Products
+                .Where(product => product.Orders.Any(order => order.OrderId == orderid))
+                .ToList();
+
+            return _mapper.Map<List<ProductDto>>(products);
+        }
+
         public ProductDto UpdateProduct(int id, ProductDto newProductData)
         {
             Product product = _dbContext.Products.Find(id);

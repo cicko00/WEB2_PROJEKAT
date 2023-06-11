@@ -5,6 +5,7 @@ namespace WebShopAPI.Interfaces
     public interface IProductService
     {
         List<ProductDto> GetProducts();
+        List<ProductDto> GetProducts(int orderid);
         List<ProductDto> GetAllSellerProducts(int userId);
         ProductDto GetById(int id);
         ProductDto AddProduct(ProductDto newProduct);

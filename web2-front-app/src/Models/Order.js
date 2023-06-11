@@ -7,7 +7,9 @@ export class Order {
       Address="",
       OrderDate=null,
       Products=[],
-      UserBuyerId=0
+      UserBuyerId=0,
+      ShipmentTime=null,
+      Price=0
       
     ) {
       this.orderId=OrderId;
@@ -16,6 +18,8 @@ export class Order {
       this.orderDate=OrderDate;
       this.products=Products;
       this.userBuyerId=UserBuyerId;
+      this.shipmentTime=ShipmentTime;
+      this.price=Price;
     }
   }
   export default Order;

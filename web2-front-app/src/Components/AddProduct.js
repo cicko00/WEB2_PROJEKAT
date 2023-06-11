@@ -211,12 +211,12 @@ catch(error){}
                 <p>Seller: {user.userName}</p>
                 <p>Category: {product.category}</p>
                 <p className='desc'>Description: {product.description}</p>
-                {product.quantity && (
+                 
                   <p>
                     Quantity: {product.quantity}{' '}
                     <button onClick={() => handleIncreaseQuantity(product.productId)}>+</button>
                   </p>
-                )}
+                
                 <button onClick={() => handleModifyProduct(product)}>Modify</button>
               </div>
             ) : (

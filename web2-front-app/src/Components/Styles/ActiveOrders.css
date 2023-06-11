@@ -1,0 +1,42 @@
+.active-orders-container {
+    background-color: #000;
+    color: #fff;
+    padding: 20px;
+  }
+  
+  .active-orders-title {
+    text-align: center;
+  }
+  
+  .order-card {
+    border: 1px solid #fff;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .order-info {
+    margin-bottom: 10px;
+  }
+  
+  .dismiss-button {
+    text-align: center;
+  }
+  
+  .dismiss-button button {
+    background-color: #c70000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .dismiss-button button:hover {
+    background-color: #ff0000;
+  }
+  
+  p {
+    margin: 5px 0;
+  }
+  
