@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './Styles/Home.css';
 import axios from 'axios';
+import { PickRole } from '../Services/RolePicker';
 
-const Home = () => {
+const Home = ({ isLoggedIn,setChartItems,chartItems }) => {
   const [articles, setArticles] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedQuantity, setSelectedQuantity] = useState(1);
 
   useEffect(() => {
     fetchArticles();
@@ -14,11 +16,28 @@ const Home = () => {
   const fetchArticles = async () => {
     try {
       const response = await axios.get('https://localhost:7108/api/products/all');
-      setArticles(response.data);
+      const fetchedArticles = response.data;
+      
+      // Decrease quantity of products in the chart
+      const updatedArticles = fetchedArticles.map((article) => {
+        const chartItem = chartItems.find((item) => item.productId === article.productId);
+        if (chartItem) {
+          // Decrease the quantity by the amount already in the chart
+          const updatedQuantity = article.quantity - chartItem.quantity;
+          return {
+            ...article,
+            quantity: updatedQuantity >= 0 ? updatedQuantity : 0,
+          };
+        }
+        return article;
+      });
+  
+      setArticles(updatedArticles);
     } catch (error) {
       console.error(error);
     }
   };
+  
 
   const filterArticles = (category) => {
     setSelectedCategory(category);
@@ -33,14 +52,25 @@ const Home = () => {
     try {
       const response = await axios.get(`https://localhost:7108/api/products/${productId}`);
       setSelectedProduct(response.data);
+      setSelectedQuantity(1); // Reset selected quantity when displaying new product details
     } catch (error) {
       console.error(error);
     }
   };
 
-  const addToCart = (product) => {
-    // Implement your logic to add the product to the cart
-    console.log('Product added to cart:', product);
+  const addToChart = (product) => {
+    const productToAdd = {
+      ...product,
+      quantity: selectedQuantity,
+    };
+
+    
+    selectedProduct.quantity=selectedQuantity;
+    setChartItems((prevItems)=>[...prevItems,selectedProduct]
+      
+    )
+    // Implement your logic to add the product to the chart
+    console.log('Product added to chart:', productToAdd);
   };
 
   const closeProductDetails = () => {
@@ -81,16 +111,44 @@ const Home = () => {
               <h3>{selectedProduct.name}</h3>
               <p>Description: {selectedProduct.description}</p>
               <p>Price: ${selectedProduct.price}</p>
-              <div className="quantity-picker">
-                <button>-</button>
-                <input type="text" value={selectedProduct.quantity} readOnly />
-                <button>+</button>
-              </div>
-              <button onClick={() => addToCart(selectedProduct)}>Add to Cart</button>
+              {isLoggedIn === true && PickRole().isBuyer === true && (
+                <>
+                  <div className="quantity-picker">
+                    <button
+                      onClick={() =>
+                        setSelectedQuantity((prevQuantity) => Math.max(prevQuantity - 1, 1))
+                      }
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      value={selectedQuantity}
+                      onChange={(e) => {
+                        const newQuantity = parseInt(e.target.value);
+                        if (newQuantity <= selectedProduct.quantity) {
+                          setSelectedQuantity(newQuantity);
+                        }
+                        else{
+                          setSelectedQuantity(selectedProduct.quantity)
+                        }
+                      }}
+                    />
+                    <button
+                      onClick={() =>
+                        setSelectedQuantity((prevQuantity) =>
+                          Math.min(prevQuantity + 1, selectedProduct.quantity)
+                        )
+                      }
+                    >
+                      +
+                    </button>
+                  </div>
+                  <button onClick={() => addToChart(selectedProduct)}>Add to Cart</button>
+                </>
+              )}
+              <button onClick={closeProductDetails}>Close</button>
             </div>
-            <button className="close-button" onClick={closeProductDetails}>
-              Close
-            </button>
           </div>
         </div>
       )}

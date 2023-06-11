@@ -8,6 +8,6 @@
         public DateTime OrderDate { get; set; }
         public User UserBuyer { get; set; }
         public int UserBuyerId { get; set; }
-        public List<Product> OrderProducts { get; set; }
+        public List<OrderProduct> OrderProducts { get; set; }
     }
 }

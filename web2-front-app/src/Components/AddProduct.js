@@ -44,6 +44,7 @@ const AddProduct = () => {
   };
 
   const handleImageUpload = (e) => {
+    try{
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onload = () => {
@@ -60,6 +61,8 @@ const AddProduct = () => {
       }
     };
     reader.readAsDataURL(file);
+}
+catch(error){}
   };
 
   const handleAddProduct = async () => {

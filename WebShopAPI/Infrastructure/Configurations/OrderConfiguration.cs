@@ -20,8 +20,7 @@ namespace WebShopAPI.Infrastructure.Configurations
                 .IsRequired(false);
 
             
-            builder.HasMany(x => x.OrderProducts)
-                .WithMany(x => x.Orders);
+           
         }
     }
 }

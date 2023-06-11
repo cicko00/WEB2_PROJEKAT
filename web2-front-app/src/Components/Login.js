@@ -4,7 +4,7 @@ import axios from 'axios';
 import {  useNavigate } from 'react-router-dom';
 import {decodeJWTToken} from '../Services/JwtDecodeService'
 
-const Login = ({handleLogin}) => {
+const Login = ({handleLogin,setUserType}) => {
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

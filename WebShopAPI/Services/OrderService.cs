@@ -19,13 +19,45 @@ namespace WebShopAPI.Services
             _dbContext = dbContext;
         }
 
-        public OrderDto AddOrder(OrderDto newOrder)
+        public string AddOrder(OrderDto newOrder)
         {
-            Order order = _mapper.Map<Order>(newOrder);
-            _dbContext.Orders.Add(order);
+            List<Product> productsFromReact = _mapper.Map<List<Product>>(newOrder.Products);
+            List<Product> productsFromDatabase = _dbContext.Products.ToList();
+            List<OrderProduct> orderProducts = new List<OrderProduct>();
+
+            foreach (Product productReact in productsFromReact)
+            {
+                Product matchingProduct = productsFromDatabase.FirstOrDefault(p => p.ProductId == productReact.ProductId);
+                if (matchingProduct != null)
+                {
+                    if (productReact.Quantity > matchingProduct.Quantity)
+                    {
+                        return "ERROR";
+                    }
+                    else
+                    {
+                        matchingProduct.Quantity -= productReact.Quantity;
+                        // Update the quantity in the database
+                        _dbContext.Entry(matchingProduct).Property("Quantity").IsModified = true;
+                        orderProducts.Add(new OrderProduct() { ProductId = matchingProduct.ProductId,Quantity=productReact.Quantity }) ;
+                    }
+                }
+            }
+
+            
+            Order o = new Order();
+            o.Address = newOrder.Address;
+            o.OrderDate = newOrder.OrderDate;
+            o.UserBuyerId = newOrder.UserBuyerId;
+            o.OrderProducts = orderProducts;
+            o.Comment= newOrder.Comment;
+
+            
+
+            _dbContext.Orders.Add(o);
             _dbContext.SaveChanges();
 
-            return _mapper.Map<OrderDto>(newOrder);
+            return "OK";
         }
 
         public bool DeleteOrder(int id)

@@ -30,6 +30,7 @@ const Profile = () => {
   };
 
   const handlePhotoChange = () => {
+    try{
     if (user.fbUser === false) {
       const fileInput = document.createElement('input');
       fileInput.type = 'file';
@@ -49,6 +50,9 @@ const Profile = () => {
       };
       fileInput.click();
     }
+    }
+    catch(error){}
+
   };
   
 

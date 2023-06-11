@@ -8,7 +8,7 @@ namespace WebShopAPI.Interfaces
         List<OrderDto> GetOrders();
        
         OrderDto GetById(int id);
-        OrderDto AddOrder(OrderDto newOrder);
+        string AddOrder(OrderDto newOrder);
         OrderDto UpdateOrder(int id, OrderDto newOrderData);
         bool DeleteOrder(int id);
     }

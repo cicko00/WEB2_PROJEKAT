@@ -8,10 +8,12 @@ import Profile from './Components/Profile';
 import {PickRole} from './Services/RolePicker' 
 import './App.css';
 import ShowMyProducts from './Components/ShowMyProducts';
+import Chart from './Components/Chart';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
+  const [userType, setUserType] = useState("");
   const [chartItems,setChartItems]=useState([]);
   
   const handleLogin = () => {
@@ -24,6 +26,9 @@ const App = () => {
   const handleLogout = () => {
     // Perform logout logic and set isLoggedIn to false
     setIsLoggedIn(false);
+    setChartItems([]);
+    sessionStorage.removeItem("User");
+
   };
 
   useEffect(() => {
@@ -113,11 +118,12 @@ const App = () => {
       </nav>
 
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home isLoggedIn={isLoggedIn} setChartItems={setChartItems} chartItems={chartItems} />} />
         <Route path="/register" element={<Register handleLogin={handleLogin}/>} />
-        <Route path="/login" element={<Login handleLogin={handleLogin} />} />
+        <Route path="/login" element={<Login handleLogin={handleLogin} setUserType={setUserType}  />} />
         <Route path="/addProduct" element={<AddProduct/>} />
         <Route path="/showProducts" element={<ShowMyProducts/>} />
+        <Route path="/chart" element={<Chart setChartItems={setChartItems} chartItems={chartItems} isLoggedIn={isLoggedIn}/>} />
         {isLoggedIn && (
           
           <Route path="/profile" element={<Profile />} />
