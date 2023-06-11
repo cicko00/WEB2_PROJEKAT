@@ -13,6 +13,7 @@
         public string Image { get; set; }
         public bool Verified { get; set; } = false;
         public bool Fbuser { get; set; } = false;
+        public string? Address { get; set; }
         public List<Order> CreatedOrders { get; set; }
         public List<Product> UserProducts { get; set; }
     }

@@ -1,4 +1,5 @@
-﻿using WebShopAPI.Models;
+﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+using WebShopAPI.Models;
 
 namespace WebShopAPI.Dto
 {
@@ -10,6 +11,8 @@ namespace WebShopAPI.Dto
         public double Price { get; set; }
         public int Quantity { get; set; }
         public string Image { get; set; }
-        public User Seller { get; set; }
+        public int SellerId { get; set; }
+        public string Category { get; set; }
+        public string? SellerName { get; set; }
     }
 }

@@ -32,7 +32,7 @@ const ChangePassword = ({ onSave, onCancel,user }) => {
       // Save the new password
       const updatedUser = {
         ...user,
-        oldPassword:user.password,
+        oldPassword:oldPassword,
         password: newPassword,
         
       };

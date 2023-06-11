@@ -16,6 +16,9 @@ namespace WebShopAPI.Controllers
             _productService = productService;
         }
 
+        
+
+
         [HttpGet("all")]
         public IActionResult GetAll()
         {
@@ -28,6 +31,12 @@ namespace WebShopAPI.Controllers
             return Ok(_productService.GetById(id));
         }
 
+        [HttpGet("seller/{userId}")]
+        public IActionResult GetAllSellerProducts(int userId)
+        {
+            return Ok(_productService.GetAllSellerProducts(userId));
+        }
+
         [HttpPost]
         public IActionResult CreateProduct([FromBody] ProductDto product)
         {
@@ -38,6 +47,12 @@ namespace WebShopAPI.Controllers
         public IActionResult ChangeProduct(int id, [FromBody] ProductDto product)
         {
             return Ok(_productService.UpdateProduct(id, product));
+        }
+
+        [HttpPut("{id}/increase-quantity")]
+        public IActionResult ChangeProductQuantity(int id)
+        {
+            return Ok(_productService.UpdateProductQuantinty(id));
         }
 
         [HttpDelete("{id}")]

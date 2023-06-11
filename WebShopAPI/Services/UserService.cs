@@ -64,6 +64,7 @@ namespace WebShopAPI.Services
                 claims.Add(new Claim("Password", user.Password));
                 claims.Add(new Claim("DateOfBirth",Convert.ToString( user.DateOfBirth)));
                 claims.Add(new Claim("Photo", user.Image));
+                claims.Add(new Claim("Address", user.Address));
                 claims.Add(new Claim("FbUser",Convert.ToString(user.Fbuser)));
 
 
@@ -98,6 +99,10 @@ namespace WebShopAPI.Services
                     {
                         if (newUser.Email == u.Email)
                         {
+                            if (u.Fbuser== false)
+                            {
+                                return "EMAIL IS ALREADY USED BY OTHER ACCOUNT!";
+                            }
 
                            
 
@@ -173,6 +178,15 @@ namespace WebShopAPI.Services
             User user = _dbContext.Users.Find(id);
             if (newUserData.Password == user.Password)
             {
+                try
+                {
+                    UserDto usr = _mapper.Map<List<UserDto>>(_dbContext.Users.ToList()).First(x => x.UserName == newUserData.UserName);
+                    return null;
+                }
+                catch(Exception exc)
+                {
+
+                }
                 user.UserName = newUserData.UserName;
                 user.Email = newUserData.Email;
                 user.Password = newUserData.Password;
@@ -180,10 +194,11 @@ namespace WebShopAPI.Services
                 user.LastName = newUserData.LastName;
                 user.DateOfBirth = newUserData.DateOfBirth;
                 user.Image = newUserData.Image;
+                user.Address= newUserData.Address;
             }
             else
             {
-                if(user.Password==newUserData.OldPassword)
+                if(BCrypt.Net.BCrypt.Verify(newUserData.OldPassword,user.Password))
                 {
                     if (_mapper.Map<List<UserDto>>(_dbContext.Users.ToList()).Any(usr => usr.Password == BCrypt.Net.BCrypt.HashPassword(newUserData.Password)))
                     {

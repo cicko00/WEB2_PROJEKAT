@@ -1,6 +1,6 @@
 
 
-export function RolePicker() {
+export function PickRole() {
     var roles={
       isBuyer:false,
       isSeller:false,
@@ -8,20 +8,22 @@ export function RolePicker() {
     }
     try {
       var user=JSON.parse(sessionStorage["User"]);
-      if(user.UserType==='admin'){
+      console.log(user.userType);
+      console.log(user.email);
+      if(user.userType==='admin'){
         roles.isAdmin=true;
       }
-      else if(user.UserType==='seller'){
+      else if(user.userType==='seller'){
         roles.isSeller=true;
       }
-      else if(user.UserType==='buyer'){
+      else if(user.userType==='buyer'){
         roles.isBuyer=true;
       }
       
   }
-  catch(error){}
+  catch(error){console.log(error)}
 
 return roles;
 }
-  export default RolePicker();
+  export default PickRole();
   

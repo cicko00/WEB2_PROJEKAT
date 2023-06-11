@@ -11,5 +11,6 @@
         public User Seller { get; set; }
         public int SellerId { get; set; }
         public List<Order> Orders { get; set; }
+        public string Category { get; set; }
     }
 }

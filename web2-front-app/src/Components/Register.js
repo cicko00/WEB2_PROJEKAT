@@ -7,6 +7,7 @@ import Login from './Login';
 import FacebookLogin from 'react-facebook-login';
 import {decodeJWTToken} from '../Services/JwtDecodeService'
 import {setFbPhoto} from "../Services/SetPhotoFbUserService"
+import {PickRole} from "../Services/RolePicker"
 
 const Register = ({handleLogin}) => {
   const navigate = useNavigate();
@@ -154,6 +155,7 @@ const Register = ({handleLogin}) => {
       
       var i=decodeJWTToken(result.data);
       setFbPhoto(picture.data.url);
+      
       
       if(i===null){
         alert("SOMETHING WENT WRONG!");

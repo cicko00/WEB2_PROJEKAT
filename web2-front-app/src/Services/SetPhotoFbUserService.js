@@ -6,7 +6,7 @@ export function setFbPhoto(url){
     if(user==null){
         return null;
     }
-    user.Image=url;
+    user.image=url;
     sessionStorage.setItem("User", JSON.stringify(user));
 }
 export default setFbPhoto();

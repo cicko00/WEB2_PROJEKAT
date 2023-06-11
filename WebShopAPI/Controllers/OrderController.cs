@@ -22,6 +22,12 @@ namespace WebShopAPI.Controllers
             return Ok(_orderService.GetOrders());
         }
 
+        [HttpGet("{userid}")]
+        public IActionResult GetUserProducts()
+        {
+            return Ok(_orderService.GetOrders());
+        }
+
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {

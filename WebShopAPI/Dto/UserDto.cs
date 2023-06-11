@@ -16,7 +16,7 @@ namespace WebShopAPI.Dto
         public string Image { get; set; }
 
         public bool Fbuser { get; set; }
-        public string Address { get; set; }
+        public string? Address { get; set; }
         public string? OldPassword { get; set; } = null;
     }
 }
