@@ -28,6 +28,14 @@ namespace WebShopAPI.Controllers
             return Ok(_orderService.GetOrders());
         }
 
+        [HttpGet("seller/{userid}")]
+        public IActionResult GetSellerProducts(int userid)
+        {
+           
+
+            return Ok(_orderService.GetOrdersSeller(userid));
+        }
+
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {

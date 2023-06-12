@@ -10,7 +10,8 @@ export class User {
       Email="",
       Image="",
       FbUser,
-      UserType=""
+      UserType="",
+      Verified=""
     ) {
       this.userId=UserId;
       this.userName = UserName;
@@ -23,6 +24,7 @@ export class User {
       this.image = Image;
       this.fbUser = FbUser;
       this.userType = UserType;
+      this.verified=Verified;
     }
   }
   export default User;

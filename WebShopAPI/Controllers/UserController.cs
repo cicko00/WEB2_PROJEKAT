@@ -27,7 +27,7 @@ namespace WebShopAPI.Controllers
             return Ok(_userService.Login(credDto));
         }
 
-        [HttpGet("all")]
+        [HttpGet("/seller/all")]
         public IActionResult GetAll()
         {
             return Ok(_userService.GetUsers());
@@ -56,6 +56,12 @@ namespace WebShopAPI.Controllers
         public IActionResult ChangeUser(int id, [FromBody] UserDto user)
         {
             return Ok(_userService.UpdateUser(id, user));
+        }
+
+        [HttpPut("admin/{id}/{value}")]
+        public IActionResult ChangeUserByAdmin(int id,int value)
+        {
+            return Ok(_userService.UpdateUserByAdmin(id, value));
         }
 
         [HttpDelete("{id}")]

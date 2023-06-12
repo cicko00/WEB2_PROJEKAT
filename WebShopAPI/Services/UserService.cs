@@ -2,12 +2,14 @@
 using BCrypt.Net;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using WebShopAPI.Dto;
 using WebShopAPI.Infrastructure;
 using WebShopAPI.Interfaces;
 using WebShopAPI.Models;
+
 
 namespace WebShopAPI.Services
 {  
@@ -65,7 +67,9 @@ namespace WebShopAPI.Services
                 claims.Add(new Claim("DateOfBirth",Convert.ToString( user.DateOfBirth)));
                 claims.Add(new Claim("Photo", user.Image));
                 claims.Add(new Claim("Address", user.Address));
-                claims.Add(new Claim("FbUser",Convert.ToString(user.Fbuser)));
+                claims.Add(new Claim("Verified",Convert.ToString(user.Verified)));
+
+            claims.Add(new Claim("FbUser",Convert.ToString(user.Fbuser)));
 
 
 
@@ -84,7 +88,22 @@ namespace WebShopAPI.Services
            
         }
 
-        public string AddUser(UserDto newUser)
+
+
+        
+
+    
+
+
+
+
+
+
+
+
+
+
+    public string AddUser(UserDto newUser)
         {
 
             if (newUser.Fbuser == true)
@@ -169,7 +188,7 @@ namespace WebShopAPI.Services
 
         public List<UserDto> GetUsers()
         {
-            return _mapper.Map<List<UserDto>>(_dbContext.Users.ToList());
+            return _mapper.Map<List<UserDto>>(_dbContext.Users.Where(x=>x.UserType=="seller").ToList());
         }
 
         public UserDto UpdateUser(int id, UserDto newUserData)
@@ -212,6 +231,20 @@ namespace WebShopAPI.Services
             }
            
            
+            _dbContext.SaveChanges();
+
+            return _mapper.Map<UserDto>(user);
+        }
+
+        public UserDto UpdateUserByAdmin(int id, int value)
+        {
+
+
+
+
+
+            User user = _dbContext.Users.Find(id);
+            user.Verified = value;
             _dbContext.SaveChanges();
 
             return _mapper.Map<UserDto>(user);

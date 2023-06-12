@@ -8,7 +8,7 @@ import User from '../Models/User.js'
     const decodedToken = jwtDecode(token);
 
     // Extract the claims from the decoded token
-    const {UserId, UserName, Email, FirstName, LastName, DateOfBirth, Photo, FbUser,UserType,Password } = decodedToken;
+    const {UserId, UserName, Email, FirstName, LastName, DateOfBirth, Photo, FbUser,UserType,Password,Address,Verified } = decodedToken;
     var bool;
     if(FbUser==="False"){
         bool=false;
@@ -25,13 +25,15 @@ import User from '../Models/User.js'
       FirstName,
       LastName,
       DateOfBirth,
-      '',
+      Address,
       Email, 
       Photo,
       bool,
-      UserType
+      UserType,
+      parseInt(Verified)
     );
     sessionStorage.setItem("User", JSON.stringify(user));
+    sessionStorage.setItem("Token",JSON.stringify(token));
     return user;
     
   } catch (error) {

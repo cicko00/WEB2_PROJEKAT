@@ -11,12 +11,16 @@ import ShowMyProducts from './Components/ShowMyProducts';
 import Chart from './Components/Chart';
 import ActiveOrders from './Components/ActiveOrders';
 import OrderHistory from './Components/OrderHistory';
+import NewOrders from "./Components/NewOrders";
+import OrdersHistorrySeller from "./Components/OrdersHistorrySeller";
+import Verifications from "./Components/Verifications"
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const [userType, setUserType] = useState("");
   const [chartItems,setChartItems]=useState([]);
+  
   
   const handleLogin = () => {
     // Perform login logic and set isLoggedIn to true
@@ -102,6 +106,18 @@ const App = () => {
                   </>
               )}
 
+                {isLoggedIn && PickRole().isAdmin===true &&(
+                <>
+                  <li className="nav-item">
+                    <Link to="/verifications" className="nav-link">Verifications</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/orderActivity" className="nav-link">Order Activity</Link>
+                  </li>
+                  </>
+              )}
+
+
               {isLoggedIn && (
                 <>
                   <li className="nav-item">
@@ -123,15 +139,36 @@ const App = () => {
         <Route path="/" element={<Home isLoggedIn={isLoggedIn} setChartItems={setChartItems} chartItems={chartItems} />} />
         <Route path="/register" element={<Register handleLogin={handleLogin}/>} />
         <Route path="/login" element={<Login handleLogin={handleLogin} setUserType={setUserType}  />} />
+        {isLoggedIn &&   (
         <Route path="/addProduct" element={<AddProduct/>} />
-        <Route path="/showProducts" element={<ShowMyProducts/>} />
-        <Route path="/activeOrders" element={<ActiveOrders/>} />
-        <Route path="/OrderHistory" element={<OrderHistory/>} />
-        <Route path="/chart" element={<Chart setChartItems={setChartItems} chartItems={chartItems} isLoggedIn={isLoggedIn}/>} />
-        {isLoggedIn && (
-          
-          <Route path="/profile" element={<Profile />} />
         )}
+        {isLoggedIn &&(
+        <Route path="/showProducts" element={<ShowMyProducts/>} />
+        )}
+        {(isLoggedIn &&
+        <Route path="/activeOrders" element={<ActiveOrders/>} />
+        )}
+        {isLoggedIn &&(
+        <Route path="/newOrders" element={<NewOrders/>} />
+        )}
+        {isLoggedIn &&(
+        <Route path="/OrderHistory" element={<OrderHistory/>} />
+        )}
+        {isLoggedIn && (
+        <Route path="/chart" element={<Chart setChartItems={setChartItems} chartItems={chartItems} isLoggedIn={isLoggedIn}/>} />
+        )}
+        {isLoggedIn &&(
+          <Route path="/profile" element={<Profile />} />
+          )}
+
+        {isLoggedIn &&(
+        <Route path="/ordersHistory" element={<OrdersHistorrySeller/>} />
+        )}
+
+       {isLoggedIn &&(
+        <Route path="/verifications" element={<Verifications/>} />
+        )}
+       
       </Routes>
     </Router>
   );

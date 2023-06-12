@@ -85,6 +85,7 @@ namespace WebShopAPI.Services
             return _mapper.Map<List<ProductDto>>(products);
         }
 
+       
         public ProductDto UpdateProduct(int id, ProductDto newProductData)
         {
             Product product = _dbContext.Products.Find(id);
@@ -99,6 +100,9 @@ namespace WebShopAPI.Services
             return _mapper.Map<ProductDto>(product);
         }
 
-       
+        public List<ProductDto> GetProductsSeller(int orderid)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

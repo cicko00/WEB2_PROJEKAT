@@ -25,8 +25,16 @@ namespace WebShopAPI.Controllers
             return Ok(_productService.GetProducts());
         }
 
+
+
         [HttpGet("order/{orderid}")]
         public IActionResult GetAll(int orderid)
+        {
+            return Ok(_productService.GetProducts(orderid));
+        }
+
+        [HttpGet("order/seller/{orderid}")]
+        public IActionResult GetAllSeller(int orderid)
         {
             return Ok(_productService.GetProducts(orderid));
         }
@@ -54,6 +62,8 @@ namespace WebShopAPI.Controllers
         {
             return Ok(_productService.UpdateProduct(id, product));
         }
+
+        
 
         [HttpPut("{id}/increase-quantity")]
         public IActionResult ChangeProductQuantity(int id)

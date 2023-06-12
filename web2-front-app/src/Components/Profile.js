@@ -91,6 +91,21 @@ const Profile = () => {
               <span>{user.dateOfBirth}</span>
             </div>
             <div className="profile-field">
+              <span className="profile-label">Verification Status:</span>
+              {user.verified===0 &&(
+                <span>REJECTED</span>
+              )}
+              {user.verified===1 &&(
+                <span>WAITING</span>
+              )}
+
+                {user.verified===2 &&(
+                <span>VERIFIED</span>
+              )}
+              
+            </div>
+
+            <div className="profile-field">
               <span className="profile-label">Address:</span>
               <span>{user.address}</span>
             </div>

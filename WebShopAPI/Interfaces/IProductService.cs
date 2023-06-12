@@ -6,6 +6,7 @@ namespace WebShopAPI.Interfaces
     {
         List<ProductDto> GetProducts();
         List<ProductDto> GetProducts(int orderid);
+        List<ProductDto> GetProductsSeller(int orderid);
         List<ProductDto> GetAllSellerProducts(int userId);
         ProductDto GetById(int id);
         ProductDto AddProduct(ProductDto newProduct);

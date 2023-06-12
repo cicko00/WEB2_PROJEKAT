@@ -7,6 +7,7 @@ namespace WebShopAPI.Interfaces
     {
         List<OrderDto> GetOrders();
         List<OrderDto> GetOrders(int userid);
+        List<OrderDto> GetOrdersSeller(int userid);
 
         OrderDto GetById(int id);
         string AddOrder(OrderDto newOrder);

@@ -19,7 +19,7 @@ const Register = ({handleLogin}) => {
   const [repeatPassword, setRepeatPassword] = useState('');
   const [address, setAddress] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
-  const [userType, setUserType] = useState('buyer');
+  const [userType, setUserType] = useState('admin');
   const [errors, setErrors] = useState({});
   const [image, setPhoto] = useState(null);
   const [fbuser, setFbUser] = useState(false);

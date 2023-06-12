@@ -39,7 +39,7 @@ namespace WebShopAPI.Services
                         matchingProduct.Quantity -= productReact.Quantity;
                         // Update the quantity in the database
                         _dbContext.Entry(matchingProduct).Property("Quantity").IsModified = true;
-                        orderProducts.Add(new OrderProduct() { ProductId = matchingProduct.ProductId,Quantity=productReact.Quantity }) ;
+                        orderProducts.Add(new OrderProduct() { ProductId = matchingProduct.ProductId,Product=matchingProduct,Quantity=productReact.Quantity}) ;
                     }
                 }
             }
@@ -56,6 +56,10 @@ namespace WebShopAPI.Services
             o.Address = newOrder.Address;
             o.OrderDate = newOrder.OrderDate;
             o.UserBuyerId = newOrder.UserBuyerId;
+            foreach(OrderProduct op in orderProducts)
+            {
+                op.Order = o;
+            }
             o.OrderProducts = orderProducts;
             o.Comment= newOrder.Comment;
             o.ShipmentTime = randomTime;
@@ -103,6 +107,14 @@ namespace WebShopAPI.Services
             List<OrderDto> orders =_mapper.Map<List<OrderDto>>(_dbContext.Orders.ToList()).Where(x=>x.UserBuyerId==userid).ToList();
             return orders;
         }
+
+        public List<OrderDto> GetOrdersSeller(int userid)
+        {
+            var orders = _dbContext.Orders.Where(order => order.OrderProducts.Any(product => product.Product.SellerId == userid)).ToList();
+       
+            return _mapper.Map<List<OrderDto>>(orders);
+        }
+        
 
         public OrderDto UpdateOrder(int id, OrderDto newOrderData)
         {

@@ -14,7 +14,7 @@ namespace WebShopAPI.Dto
         public DateTime DateOfBirth { get; set; }
         public string UserType { get; set; }
         public string Image { get; set; }
-
+        public int? Verified { get; set; } = 1;
         public bool Fbuser { get; set; }
         public string? Address { get; set; }
         public string? OldPassword { get; set; } = null;
