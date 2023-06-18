@@ -19,7 +19,7 @@ const Register = ({handleLogin}) => {
   const [repeatPassword, setRepeatPassword] = useState('');
   const [address, setAddress] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
-  const [userType, setUserType] = useState('admin');
+  const [userType, setUserType] = useState('buyer');
   const [errors, setErrors] = useState({});
   const [image, setPhoto] = useState(null);
   const [fbuser, setFbUser] = useState(false);
@@ -129,6 +129,7 @@ const Register = ({handleLogin}) => {
   };
 
   const responseFacebook = async(response) => {
+    try{
     setFirstName("");
     setLastName("");
     setEmail("");
@@ -146,6 +147,7 @@ const Register = ({handleLogin}) => {
       // Set the URL as the background image of the photo frame
       photoFrameRef.current.style.backgroundImage = `url(${photoURL})`;
     }
+
     
     
     var result=await sendRequest(data);
@@ -174,7 +176,8 @@ const Register = ({handleLogin}) => {
         console.log(result.data);
       }
     
-      
+    }
+    catch(error){}
     
       
       

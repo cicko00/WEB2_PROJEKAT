@@ -197,15 +197,20 @@ namespace WebShopAPI.Services
             User user = _dbContext.Users.Find(id);
             if (newUserData.Password == user.Password)
             {
-                try
-                {
-                    UserDto usr = _mapper.Map<List<UserDto>>(_dbContext.Users.ToList()).First(x => x.UserName == newUserData.UserName);
-                    return null;
-                }
-                catch(Exception exc)
+                if(newUserData.UserId != user.UserId)
                 {
 
+                    try
+                    {
+                        UserDto usr = _mapper.Map<UserDto>(_dbContext.Users.ToList().First(x => x.UserName == newUserData.UserName));
+                        return null;
+                    }
+                    catch (Exception exc)
+                    {
+                        user.UserId= newUserData.UserId;
+                    }
                 }
+               
                 user.UserName = newUserData.UserName;
                 user.Email = newUserData.Email;
                 user.Password = newUserData.Password;

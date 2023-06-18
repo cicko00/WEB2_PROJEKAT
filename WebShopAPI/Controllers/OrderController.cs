@@ -25,7 +25,7 @@ namespace WebShopAPI.Controllers
         [HttpGet("user/{userid}")]
         public IActionResult GetUserProducts(int userid)
         {
-            return Ok(_orderService.GetOrders());
+            return Ok(_orderService.GetOrders(userid));
         }
 
         [HttpGet("seller/{userid}")]
