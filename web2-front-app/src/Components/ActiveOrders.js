@@ -17,7 +17,7 @@ const ActiveOrders = () => {
   const fetchActiveOrders = async () => {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
-      const response = await axios.get('https://localhost:7108/api/orders/user/' + userID);
+      const response = await axios.get('https://localhost:7122/api/orders/user/' + userID);
       const orders = response.data.filter((order) => moment(order.shipmentTime).isAfter(moment()));
       setActiveOrders(orders);
     } catch (error) {
@@ -28,7 +28,7 @@ const ActiveOrders = () => {
   const handleDismissOrder = async (orderId) => {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
-      await axios.delete(`https://localhost:7108/api/orders/${orderId}`);
+      await axios.delete(`https://localhost:7122/api/orders/${orderId}`);
       fetchActiveOrders();
     } catch (error) {
       console.log('Error dismissing order:', error);
@@ -39,7 +39,7 @@ const ActiveOrders = () => {
     const fetchData = async (orderId) => {
       try {
         axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
-        const response = await axios.get(`https://localhost:7108/api/products/order/${orderId}`);
+        const response = await axios.get(`https://localhost:7122/api/products/order/${orderId}`);
         const products = response.data.map((item) => item.name);
         setActiveOrders((prevOrders) => {
           return prevOrders.map((order) => {

@@ -79,10 +79,9 @@ builder.Services.AddCors(options =>
 
 
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddScoped<IProductService, ProductService>();
 
-builder.Services.AddDbContext<WebShopDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("WebShopDatabase")));
+
+builder.Services.AddDbContext<UsersDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("WebShopDatabase")));
 var mapperConfig = new MapperConfiguration(mc =>
 {
     mc.AddProfile(new MappingProfile());

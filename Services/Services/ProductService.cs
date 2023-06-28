@@ -76,7 +76,7 @@ namespace Services.Services
             List<ProductDto> lp = new List<ProductDto>();
             foreach (ProductDto p in _mapper.Map<List<ProductDto>>(_dbContext.Products.ToList()))
             {
-                p.SellerName = _mapper.Map<UserDto>(_dbContext.Users.ToList().Find(x => x.UserId == p.SellerId)).UserName;
+              //  p.SellerName = _mapper.Map<UserDto>(_dbContext.Users.ToList().Find(x => x.UserId == p.SellerId)).UserName;
                 lp.Add(p);
             }
             return lp;

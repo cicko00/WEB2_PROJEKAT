@@ -1,0 +1,404 @@
+{
+  "Routes": [
+    {
+
+
+      //  PRODUCT SERVICE
+
+
+      "DownstreamPathTemplate": "/api/products/all",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7108
+        }
+      ],
+      "UpstreamPathTemplate": "/api/products/all",
+      "UpstreamHttpMethod": [ "Get" ]
+
+
+    },
+    {
+
+
+      "DownstreamPathTemplate": "/api/products/order/{orderid}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7108
+        }
+      ],
+      "UpstreamPathTemplate": "/api/products/order/{orderid}",
+      "UpstreamHttpMethod": [ "Get" ]
+
+    },
+    {
+
+
+      "DownstreamPathTemplate": "/api/products/order/seller/{orderid}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7108
+        }
+      ],
+      "UpstreamPathTemplate": "/api/products/order/seller/{orderid}",
+      "UpstreamHttpMethod": [ "Get" ]
+
+    },
+
+    //
+    {
+
+
+      "DownstreamPathTemplate": "/api/products/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7108
+        }
+      ],
+      "UpstreamPathTemplate": "/api/products/{id}",
+      "UpstreamHttpMethod": [ "Get" ]
+
+    },
+    //
+
+    {
+
+
+      "DownstreamPathTemplate": "/api/products/seller/{userId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7108
+        }
+      ],
+      "UpstreamPathTemplate": "/api/products/seller/{userId}",
+      "UpstreamHttpMethod": [ "Get" ]
+
+    },
+
+    {
+
+
+      "DownstreamPathTemplate": "/api/products",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7108
+        }
+      ],
+      "UpstreamPathTemplate": "/api/products",
+      "UpstreamHttpMethod": [ "Post" ]
+
+    },
+
+    {
+
+
+      "DownstreamPathTemplate": "/api/products/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7108
+        }
+      ],
+      "UpstreamPathTemplate": "/api/products/{id}",
+      "UpstreamHttpMethod": [ "Put" ]
+
+    },
+
+    {
+
+
+      "DownstreamPathTemplate": "/api/products/{id}/increase-quantity",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7108
+        }
+      ],
+      "UpstreamPathTemplate": "/api/products/{id}/increase-quantity",
+      "UpstreamHttpMethod": [ "Put" ]
+
+    },
+
+    {
+
+
+      "DownstreamPathTemplate": "/api/products/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7108
+        }
+      ],
+      "UpstreamPathTemplate": "/api/products/{id}",
+      "UpstreamHttpMethod": [ "Delete" ]
+
+    },
+
+
+
+
+
+    //
+
+    //////ORDERS//////////
+
+
+
+
+
+
+
+
+
+    {
+
+
+      "DownstreamPathTemplate": "/api/orders/all",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7108
+        }
+      ],
+      "UpstreamPathTemplate": "/api/orders/all",
+      "UpstreamHttpMethod": [ "Get" ]
+
+    },
+
+    {
+
+
+      "DownstreamPathTemplate": "/api/orders/user/{userid}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7108
+        }
+      ],
+      "UpstreamPathTemplate": "/api/orders/user/{userid}",
+      "UpstreamHttpMethod": [ "Get" ]
+
+
+    },
+
+    {
+
+
+      "DownstreamPathTemplate": "/api/orders/seller/{userid}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7108
+        }
+      ],
+      "UpstreamPathTemplate": "/api/orders/seller/{userid}",
+      "UpstreamHttpMethod": [ "Get" ]
+
+
+    },
+
+    {
+
+
+      "DownstreamPathTemplate": "/api/orders/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7108
+        }
+      ],
+      "UpstreamPathTemplate": "/api/orders/{id}",
+      "UpstreamHttpMethod": [ "Get" ]
+
+
+    },
+
+    {
+
+
+      "DownstreamPathTemplate": "/api/orders/",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7108
+        }
+      ],
+      "UpstreamPathTemplate": "/api/orders/",
+      "UpstreamHttpMethod": [ "Post" ]
+
+
+    },
+
+    {
+
+
+      "DownstreamPathTemplate": "/api/orders/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7108
+        }
+      ],
+      "UpstreamPathTemplate": "/api/orders/{id}",
+      "UpstreamHttpMethod": [ "Put" ]
+
+
+    },
+
+    {
+
+
+      "DownstreamPathTemplate": "/api/orders/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7108
+        }
+      ],
+      "UpstreamPathTemplate": "/api/orders/{id}",
+      "UpstreamHttpMethod": [ "Delete" ]
+
+
+    },
+
+    
+
+
+    //
+    //
+    //  USER SERVICE
+    //
+    //
+
+    {
+      "DownstreamPathTemplate": "/api/users/login",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7190
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/login",
+      "UpstreamHttpMethod": [ "POST" ]
+
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/seller/all",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7190
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/seller/all",
+      "UpstreamHttpMethod": [ "GET" ]
+
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7190
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/{id}",
+      "UpstreamHttpMethod": [ "GET" ]
+
+
+    },
+    {
+      "DownstreamPathTemplate": "/api/users",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7190
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users",
+      "UpstreamHttpMethod": [ "POST" ]
+
+
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7190
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/{id}",
+      "UpstreamHttpMethod": [ "PUT" ]
+
+
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/admin/{id}/{value}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7190
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/admin/{id}/{value}",
+      "UpstreamHttpMethod": [ "PUT" ]
+
+
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7190
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/{id}",
+      "UpstreamHttpMethod": [ "DELETE" ]
+
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/users/photo/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7190
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/photo/{id}",
+      "UpstreamHttpMethod": [ "GET" ]
+
+    }
+  ]
+}

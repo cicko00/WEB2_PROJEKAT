@@ -17,7 +17,7 @@ const ActiveOrders = () => {
   const fetchActiveOrders = async () => {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
-      const response = await axios.get('https://localhost:7108/api/orders/seller/' + userID);
+      const response = await axios.get('https://localhost:7122/api/orders/seller/' + userID);
       const orders = response.data.filter(order => moment(order.shipmentTime).isBefore(moment()));
       setActiveOrders(orders);
     } catch (error) {
@@ -30,7 +30,7 @@ const ActiveOrders = () => {
   useEffect(() => {
     const fetchData = async (orderId) => {
       try {
-        const response = await axios.get(`https://localhost:7108/api/products/order/${orderId}`);
+        const response = await axios.get(`https://localhost:7122/api/products/order/${orderId}`);
         const products = response.data.map(item => item.name);
         setActiveOrders(prevOrders => {
           return prevOrders.map(order => {

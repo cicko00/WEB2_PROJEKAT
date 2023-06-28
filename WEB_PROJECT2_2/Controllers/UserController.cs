@@ -24,7 +24,7 @@ namespace WEB_PROJECT2_2.Controllers
         }
 
 
-        [HttpPost("login")]
+        [HttpPost("login")]//
 
         public IActionResult Post([FromBody] UserCredentialsDto credDto)
         {
@@ -32,7 +32,7 @@ namespace WEB_PROJECT2_2.Controllers
             return Ok(i);
         }
 
-        [HttpGet("/seller/all")]
+        [HttpGet("/seller/all")]//
 
         public IActionResult GetAll()
         {
@@ -44,7 +44,7 @@ namespace WEB_PROJECT2_2.Controllers
 
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}")]//
 
         public IActionResult Get(string id)
         {
@@ -55,7 +55,7 @@ namespace WEB_PROJECT2_2.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost]//
 
         public IActionResult CreateUser([FromBody] UserDto user)
         {
@@ -68,7 +68,7 @@ namespace WEB_PROJECT2_2.Controllers
             return Ok("200");
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}")]//
         public IActionResult ChangeUser(int id, [FromBody] UserDto user)
         {
 
@@ -77,7 +77,7 @@ namespace WEB_PROJECT2_2.Controllers
 
         }
 
-        [HttpPut("admin/{id}/{value}")]
+        [HttpPut("admin/{id}/{value}")]//
         public IActionResult ChangeUserByAdmin(int id, int value)
         {
 

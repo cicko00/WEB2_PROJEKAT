@@ -46,7 +46,7 @@ const Profile = () => {
 
   const getPhoto = async (id) => {
     
-    return await axios.get(`https://localhost:7108/api/users/photo/${parseInt(id)}`);
+    return await axios.get(`https://localhost:7122/api/users/photo/${parseInt(id)}`);
   };
 
   const handlePasswordChangeCancel = () => {

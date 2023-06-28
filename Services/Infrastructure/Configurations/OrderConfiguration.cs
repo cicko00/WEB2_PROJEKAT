@@ -19,10 +19,7 @@ namespace Services.Infrastructure.Configurations
             builder.Property(x => x.Comment).HasMaxLength(100);
             builder.Property(x => x.Address).HasMaxLength(100);
 
-            builder.HasOne(x => x.UserBuyer)
-                .WithMany(x => x.CreatedOrders)
-                .HasForeignKey(x => x.UserBuyerId)
-                .IsRequired(false);
+           
 
 
 

@@ -20,7 +20,7 @@ namespace Services.Models
         public int Verified { get; set; } = 1;
         public bool Fbuser { get; set; } = false;
         public string? Address { get; set; }
-        public List<Order> CreatedOrders { get; set; }
-        public List<Product> UserProducts { get; set; }
+       // public List<Order> CreatedOrders { get; set; }
+       // public List<Product> UserProducts { get; set; }
     }
 }

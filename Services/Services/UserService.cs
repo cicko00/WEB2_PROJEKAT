@@ -20,10 +20,10 @@ namespace Services.Services
     {
         private readonly IMapper _mapper;
         private readonly IConfigurationSection _secretKey;
-        private readonly WebShopDbContext _dbContext;
+        private readonly UsersDbContext _dbContext;
 
 
-        public UserService(IMapper mapper, IConfiguration config, WebShopDbContext dbContext)
+        public UserService(IMapper mapper, IConfiguration config, UsersDbContext dbContext)
         {
             _mapper = mapper;
             _dbContext = dbContext;

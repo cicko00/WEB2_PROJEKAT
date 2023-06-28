@@ -43,7 +43,7 @@ const Chart = ({ chartItems, setChartItems, isLoggedIn }) => {
       console.log(order)
       // Make a POST request to send the order data to the backend
       axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
-      const response = await axios.post('https://localhost:7108/api/orders', order);
+      const response = await axios.post('https://localhost:7122/api/orders', order);
       if (response.data === 'ERROR') {
         alert('SOMETHING IS WRONG WITH YOUR ORDER');
       } else {

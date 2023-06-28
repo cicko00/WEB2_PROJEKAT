@@ -34,7 +34,7 @@ const Login = ({handleLogin,setUserType}) => {
             password,
           };
     
-          axios.post('https://localhost:7108/api/users/login', userData)
+          axios.post('https://localhost:7122/api/users/login', userData)
             .then((response) => {
               if(response.data!=="!"){
                 console.log(typeof(response));

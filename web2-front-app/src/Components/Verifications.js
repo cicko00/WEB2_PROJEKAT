@@ -14,7 +14,7 @@ const Verifications = () => {
   const fetchUsers = async () => {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
-      const response = await axios.get('https://localhost:7108/seller/all');
+      const response = await axios.get('https://localhost:7122/seller/all');
       console.log(response.data);
       setUsers(response.data);
     } catch (error) {
@@ -24,7 +24,7 @@ const Verifications = () => {
 
   const handleAccept = async (userId) => {
     try {
-      await axios.put("https://localhost:7108/api/users/admin/"+userId+"/"+2);
+      await axios.put("https://localhost:7122/api/users/admin/"+userId+"/"+2);
       updateUserStatus(userId, 2);
     } catch (error) {
       console.log('Error accepting user:', error);
@@ -33,7 +33,7 @@ const Verifications = () => {
 
   const handleReject = async (userId) => {
     try {
-        await axios.put("https://localhost:7108/api/users/admin/"+userId+"/"+0);
+        await axios.put("https://localhost:7122/api/users/admin/"+userId+"/"+0);
       updateUserStatus(userId, 0);
     } catch (error) {
       console.log('Error rejecting user:', error);

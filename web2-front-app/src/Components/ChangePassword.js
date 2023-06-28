@@ -42,7 +42,7 @@ const ChangePassword = ({ onSave, onCancel,user }) => {
         console.log(user.UserId);
         updatedUser.dateOfBirth=(new Date(updatedUser.dateOfBirth)).toISOString();
         axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
-      await axios.put('https://localhost:7108/api/users/'+user.userId, updatedUser);
+      await axios.put('https://localhost:7122/api/users/'+user.userId, updatedUser);
       }
       catch(error){
         alert("SOMETHING WENT WRONG!");

@@ -79,7 +79,7 @@ builder.Services.AddCors(options =>
 });
 
 
-builder.Services.AddScoped<IUserService, UserService>();
+
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 

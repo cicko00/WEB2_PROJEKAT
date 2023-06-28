@@ -115,7 +115,7 @@ const Register = ({handleLogin}) => {
   };
 
   const getPhoto = async (id) => {
-    return await axios.get('https://localhost:7108/api/users/photo/'+Number(id));
+    return await axios.get('https://localhost:7122/api/users/photo/'+Number(id));
   };
 
   const photoFrameRef = useRef(null);
@@ -129,7 +129,7 @@ const Register = ({handleLogin}) => {
   };
 
   const sendRequest = async (data) => {
-    return await axios.post('https://localhost:7108/api/users', data);
+    return await axios.post('https://localhost:7122/api/users', data);
   };
 
   const responseFacebook = async(response) => {

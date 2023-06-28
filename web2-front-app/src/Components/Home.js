@@ -23,7 +23,7 @@ const Home = ({ isLoggedIn,setChartItems,chartItems }) => {
         console.log(JSON.parse(sessionStorage["User"]));
       axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
       }
-      const response = await axios.get('https://localhost:7108/api/products/all');
+      const response = await axios.get('https://localhost:7122/api/products/all');
       const fetchedArticles = response.data;
       
       // Decrease quantity of products in the chart
@@ -58,7 +58,7 @@ const Home = ({ isLoggedIn,setChartItems,chartItems }) => {
 
   const getProductDetails = async (productId) => {
     try {
-      const response = await axios.get(`https://localhost:7108/api/products/${productId}`);
+      const response = await axios.get(`https://localhost:7122/api/products/${productId}`);
       setSelectedProduct(response.data);
       setSelectedQuantity(1); // Reset selected quantity when displaying new product details
     } catch (error) {

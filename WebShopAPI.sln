@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebShopAPI", "WebShopAPI\We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{D0A552B9-0060-4E3E-A8B3-E61F1DBFB6A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB_PROJECT2_2", "WEB_PROJECT2_2\WEB_PROJECT2_2.csproj", "{9A6FC07D-05AA-4612-9E4C-EF74B5A25947}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_PROJECT2_2", "WEB_PROJECT2_2\WEB_PROJECT2_2.csproj", "{9A6FC07D-05AA-4612-9E4C-EF74B5A25947}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OcelotGateway", "OcelotGateway\OcelotGateway.csproj", "{5B0C5B0D-5961-4491-B259-073BAA5788C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{9A6FC07D-05AA-4612-9E4C-EF74B5A25947}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A6FC07D-05AA-4612-9E4C-EF74B5A25947}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A6FC07D-05AA-4612-9E4C-EF74B5A25947}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B0C5B0D-5961-4491-B259-073BAA5788C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B0C5B0D-5961-4491-B259-073BAA5788C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B0C5B0D-5961-4491-B259-073BAA5788C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B0C5B0D-5961-4491-B259-073BAA5788C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

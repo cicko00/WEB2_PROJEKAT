@@ -16,7 +16,7 @@ const user = JSON.parse(sessionStorage["User"]);
   const fetchArticlesS = async () => {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
-      const response = await axios.get('https://localhost:7108/api/products/seller/' + user.userId);
+      const response = await axios.get('https://localhost:7122/api/products/seller/' + user.userId);
       setArticles(response.data);
     } catch (error) {
       console.error(error);

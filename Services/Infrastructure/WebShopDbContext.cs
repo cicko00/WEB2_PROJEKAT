@@ -9,7 +9,7 @@ namespace Services.Infrastructure
     {
         public WebShopDbContext(DbContextOptions<WebShopDbContext> options) : base(options) { }
 
-        public DbSet<User> Users { get; set; }
+        
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
 
@@ -38,8 +38,7 @@ namespace Services.Infrastructure
             modelBuilder.Entity<OrderProduct>()
                .ToTable("OrderProducts");
 
-            modelBuilder.Entity<OrderProduct>()
-               .ToTable("OrderProducts");
+           
             // You can specify a custom table name if needed
         }
     }

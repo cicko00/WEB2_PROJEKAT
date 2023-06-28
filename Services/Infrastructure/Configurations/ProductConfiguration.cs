@@ -26,10 +26,7 @@ namespace Services.Infrastructure.Configurations
 
 
 
-            builder.HasOne(x => x.Seller)
-                .WithMany(x => x.UserProducts)
-                .HasForeignKey(x => x.SellerId)
-                .IsRequired(false);
+           
 
         }
     }
