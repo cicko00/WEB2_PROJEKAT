@@ -3,7 +3,9 @@ import axios from 'axios';
 import moment from 'moment';
 import './Styles/ActiveOrders.css';
 
+
 const ActiveOrders = () => {
+ 
   const user = JSON.parse(sessionStorage['User']);
   const userID = parseInt(user.userId);
   const [activeOrders, setActiveOrders] = useState([]);
@@ -14,8 +16,9 @@ const ActiveOrders = () => {
 
   const fetchActiveOrders = async () => {
     try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
       const response = await axios.get('https://localhost:7108/api/orders/user/' + userID);
-      const orders = response.data.filter(order => moment(order.shipmentTime).isAfter(moment()));
+      const orders = response.data.filter((order) => moment(order.shipmentTime).isAfter(moment()));
       setActiveOrders(orders);
     } catch (error) {
       console.log('Error fetching active orders:', error);
@@ -24,6 +27,7 @@ const ActiveOrders = () => {
 
   const handleDismissOrder = async (orderId) => {
     try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
       await axios.delete(`https://localhost:7108/api/orders/${orderId}`);
       fetchActiveOrders();
     } catch (error) {
@@ -34,10 +38,11 @@ const ActiveOrders = () => {
   useEffect(() => {
     const fetchData = async (orderId) => {
       try {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
         const response = await axios.get(`https://localhost:7108/api/products/order/${orderId}`);
-        const products = response.data.map(item => item.name);
-        setActiveOrders(prevOrders => {
-          return prevOrders.map(order => {
+        const products = response.data.map((item) => item.name);
+        setActiveOrders((prevOrders) => {
+          return prevOrders.map((order) => {
             if (order.orderId === orderId) {
               return { ...order, products };
             }
@@ -49,10 +54,22 @@ const ActiveOrders = () => {
       }
     };
 
-    activeOrders.forEach(order => {
+    activeOrders.forEach((order) => {
       fetchData(order.orderId);
     });
   }, [activeOrders]);
+
+  const renderTimeRemaining = (shipmentTime) => {
+    const now = moment();
+    const remainingTime = moment(shipmentTime).diff(now);
+    const duration = moment.duration(remainingTime);
+
+    const days = Math.floor(duration.asDays());
+    const hours = duration.hours();
+    const minutes = duration.minutes();
+
+    return `${days} days ${hours} hours ${minutes} minutes`;
+  };
 
   const renderOrders = () => {
     return activeOrders.map((order) => (
@@ -63,10 +80,11 @@ const ActiveOrders = () => {
           <p>Address: {order.address}</p>
           <p>Order Date: {moment(order.orderDate).format('YYYY-MM-DD HH:mm')}</p>
           <p>Shipment Time: {moment(order.shipmentTime).format('YYYY-MM-DD HH:mm')}</p>
+          <p>Remaining Time: {renderTimeRemaining(order.shipmentTime)}</p>
           <p>Price:$ {order.price}</p>
         </div>
         <div className="dismiss-button">
-        {moment().subtract(1, 'hour').isBefore(moment(order.orderDate)) && (
+          {moment().subtract(1, 'hour').isBefore(moment(order.orderDate)) && (
             <button onClick={() => handleDismissOrder(order.orderId)}>Dismiss Order</button>
           )}
         </div>
@@ -82,4 +100,4 @@ const ActiveOrders = () => {
   );
 };
 
-export default ActiveOrders;
+export default ActiveOrders

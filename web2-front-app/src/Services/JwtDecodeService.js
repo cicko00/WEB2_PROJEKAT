@@ -8,7 +8,7 @@ import User from '../Models/User.js'
     const decodedToken = jwtDecode(token);
 
     // Extract the claims from the decoded token
-    const {UserId, UserName, Email, FirstName, LastName, DateOfBirth, Photo, FbUser,UserType,Password,Address,Verified } = decodedToken;
+    const {UserId, UserName, Email, FirstName, LastName, DateOfBirth, FbUser,UserType,Password,Address,Verified,Image } = decodedToken;
     var bool;
     if(FbUser==="False"){
         bool=false;
@@ -17,6 +17,7 @@ import User from '../Models/User.js'
         bool=true;
     }
 
+    
     // Create a new User object with the extracted claims
     const user = new User(
       parseInt(UserId),
@@ -27,7 +28,7 @@ import User from '../Models/User.js'
       DateOfBirth,
       Address,
       Email, 
-      Photo,
+      Image,
       bool,
       UserType,
       parseInt(Verified)

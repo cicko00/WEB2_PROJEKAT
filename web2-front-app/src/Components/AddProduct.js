@@ -3,11 +3,13 @@ import './Styles/AddProduct.css';
 import axios from 'axios';
 import { Product } from '../Models/Product';
 
+
 const AddProduct = () => {
+  
   const user = JSON.parse(sessionStorage["User"]);
 
   const [products, setProducts] = useState([]);
-  const [newProduct, setNewProduct] = useState(new Product(0, "", "", 0, 1, "", user.userId,""));
+  const [newProduct, setNewProduct] = useState(new Product(0, "", "", 0, 1, "", user.userId,"man"));
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isAddProductVisible, setIsAddProductVisible] = useState(false);
 
@@ -17,6 +19,7 @@ const AddProduct = () => {
 
   const fetchProducts = async () => {
     try {
+     console.log(JSON.parse(sessionStorage["Token"]));
       const response = await axios.get('https://localhost:7108/api/products/seller/' + user.userId);
       setProducts(response.data);
     } catch (error) {
@@ -69,6 +72,7 @@ catch(error){}
     try {
         console.log(newProduct);
         newProduct.price=Number(newProduct.price);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
       const response = await axios.post('https://localhost:7108/api/products', newProduct);
       setProducts((prevProducts) => [...prevProducts, response.data]);
       setNewProduct(new Product(0, "", "", 0, 1, "", user.userId,""));
@@ -79,6 +83,7 @@ catch(error){}
 
   const handleIncreaseQuantity = async (productId) => {
     try {
+     
       const response = await axios.put(`https://localhost:7108/api/products/${productId}/increase-quantity`);
       const updatedProduct = response.data;
       setProducts((prevProducts) =>
@@ -98,6 +103,7 @@ catch(error){}
 
   const handleSaveProduct = async () => {
     try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
       const response = await axios.put(
         `https://localhost:7108/api/products/${selectedProduct.productId}`,
         selectedProduct

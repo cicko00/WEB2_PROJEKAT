@@ -1,11 +1,14 @@
 import React, { useState,useEffect } from 'react';
 import axios from 'axios';
+
 import './Styles/Chart.css';
 import { Product } from '../Models/Product';
 import { Order } from '../Models/Order';
 import moment from 'moment';
 
+
 const Chart = ({ chartItems, setChartItems, isLoggedIn }) => {
+  axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
   const user = JSON.parse(sessionStorage['User']);
   const [comment, setComment] = useState('Bez napomene');
   const [address, setAddress] = useState('Bez napomene');
@@ -39,6 +42,7 @@ const Chart = ({ chartItems, setChartItems, isLoggedIn }) => {
       const order = new Order(0, comment, address, orderDate, orderData.products, user.userId,null,price);
       console.log(order)
       // Make a POST request to send the order data to the backend
+      axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
       const response = await axios.post('https://localhost:7108/api/orders', order);
       if (response.data === 'ERROR') {
         alert('SOMETHING IS WRONG WITH YOUR ORDER');

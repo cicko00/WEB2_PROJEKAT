@@ -10,6 +10,7 @@ namespace WebShopAPI.Interfaces
         UserDto UpdateUser(int id, UserDto newUserData);
         UserDto UpdateUserByAdmin(int id, int value);
         bool DeleteUser(int id);
+        string getPhoto(int id);
 
         string Login(UserCredentialsDto credentialsDto);
     }

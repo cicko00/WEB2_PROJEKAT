@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import './Styles/ChangeProfileInfo.css'
 import axios from 'axios';
+
 const ChangeProfileInfo = ({ user, onSave, onCancel }) => {
+  axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
   const [updatedUser, setUpdatedUser] = useState(user);
 
   const handleChange = (e) => {
@@ -16,7 +18,7 @@ const ChangeProfileInfo = ({ user, onSave, onCancel }) => {
     try{
        updatedUser.dateOfBirth=(new Date(updatedUser.dateOfBirth)).toISOString();
        console.log(new Date(updatedUser.dateOfBirth));
-        
+       axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;  
     await axios.put('https://localhost:7108/api/users/'+user.userId, updatedUser);
     }
     catch(error){

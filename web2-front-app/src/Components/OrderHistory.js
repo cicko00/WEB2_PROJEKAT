@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+
 import moment from 'moment';
 import './Styles/OrderHistory.css';
 
+
 const OrderHistory = () => {
+  axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
   const user = JSON.parse(sessionStorage['User']);
   const userID = parseInt(user.userId);
   const [orderHistory, setOrderHistory] = useState([]);
@@ -14,6 +17,7 @@ const OrderHistory = () => {
 
   const fetchOrderHistory = async () => {
     try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
       const response = await axios.get('https://localhost:7108/api/orders/user/' + userID);
       const orders = response.data.filter(order => moment(order.shipmentTime).isBefore(moment()));
       setOrderHistory(orders);

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using WebShopAPI.Dto;
 using WebShopAPI.Infrastructure;
 using WebShopAPI.Interfaces;
@@ -79,7 +80,19 @@ namespace WebShopAPI.Services
         {
             try
             {
-                Order order = _dbContext.Orders.Find(id);
+                List<Order> orders = _dbContext.Orders.Include(o => o.OrderProducts).ToList();
+                Order order = orders.Find(o => o.OrderId == id);
+                if (order == null)
+                {
+                    return false;
+                }
+                
+                foreach(OrderProduct op in order.OrderProducts.ToList())
+                {
+                   Product p= _mapper.Map<Product>(_dbContext.Products.Find(op.ProductId));
+                    p.Quantity += op.Quantity;
+                    _dbContext.SaveChanges();
+                }
                 _dbContext.Orders.Remove(order);
                 _dbContext.SaveChanges();
                 return true;

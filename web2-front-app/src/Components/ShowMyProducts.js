@@ -4,6 +4,7 @@ import './Styles/ShowMyProducts.css';
 import axios from 'axios';
 
 const ShowMyProducts = () => {
+  axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
 const user = JSON.parse(sessionStorage["User"]);
   const [articles, setArticles] = useState([]);
   
@@ -14,6 +15,7 @@ const user = JSON.parse(sessionStorage["User"]);
 
   const fetchArticlesS = async () => {
     try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
       const response = await axios.get('https://localhost:7108/api/products/seller/' + user.userId);
       setArticles(response.data);
     } catch (error) {

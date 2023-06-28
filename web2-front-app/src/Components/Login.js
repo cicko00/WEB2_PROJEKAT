@@ -11,6 +11,8 @@ const Login = ({handleLogin,setUserType}) => {
   const [errors, setErrors] = useState({});
    const navigate = useNavigate();
 
+   
+
   const handleSubmit =async (e) => {
     e.preventDefault();
 
@@ -38,8 +40,8 @@ const Login = ({handleLogin,setUserType}) => {
                 console.log(typeof(response));
                 handleLogin();
                 
-                decodeJWTToken(response.data);
-                console.log(sessionStorage["User"]);
+                var i=decodeJWTToken(response.data);
+               
                 navigate('/');
               }
               else{
@@ -54,6 +56,9 @@ const Login = ({handleLogin,setUserType}) => {
               // Handle login error
               console.log(error);
             });
+       
+
+
     }
   };
 

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+
 import "./Styles/Verifications.css"
 
 const Verifications = () => {
+  axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -11,6 +13,7 @@ const Verifications = () => {
 
   const fetchUsers = async () => {
     try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
       const response = await axios.get('https://localhost:7108/seller/all');
       console.log(response.data);
       setUsers(response.data);

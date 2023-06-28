@@ -12,7 +12,7 @@ namespace WebShopAPI.Infrastructure.Configurations
             builder.Property(x => x.OrderId).ValueGeneratedOnAdd();
 
             builder.Property(x => x.Comment).HasMaxLength(100);
-            builder.Property(x => x.Address).HasMaxLength(50);
+            builder.Property(x => x.Address).HasMaxLength(100);
 
             builder.HasOne(x => x.UserBuyer)
                 .WithMany(x => x.CreatedOrders)

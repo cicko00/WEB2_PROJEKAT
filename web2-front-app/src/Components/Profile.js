@@ -1,21 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import './Styles/Profile.css';
 import User from '../Models/User';
 import ChangeProfileInfo from './ChangeProfileInfo';
 import ChangePassword from './ChangePassword';
+import {PickRole} from '../Services/RolePicker' 
+import axios from 'axios';
 
 const Profile = () => {
   const [user, setUser] = useState(JSON.parse(sessionStorage["User"]));
   const [editing, setEditing] = useState(false);
   const [changingPassword, setChangingPassword] = useState(false);
+  const [ph,setPh]=useState("");
 
   const handleSave = (updatedUser) => {
     // Save the updated user data
     setUser(updatedUser);
     setEditing(false);
     setChangingPassword(false);
+    sessionStorage.setItem("User",JSON.stringify(updatedUser));
+    
   };
 
+  useEffect(() => {
+   
+    renderphoto();
+
+  }, []);
+    
+  const renderphoto = async () => {
+    const id=(JSON.parse(sessionStorage["User"])).userId;
+    const p=await getPhoto(id);
+    setPh(p.data);
+    console.log("------------------");
+    console.log(p);
+    console.log(p.data);
+  };
   const handleCancel = () => {
     // Cancel the editing and go back to the profile view
     setEditing(false);
@@ -23,6 +42,11 @@ const Profile = () => {
 
   const handlePasswordChange = () => {
     setChangingPassword(true);
+  };
+
+  const getPhoto = async (id) => {
+    
+    return await axios.get(`https://localhost:7108/api/users/photo/${parseInt(id)}`);
   };
 
   const handlePasswordChangeCancel = () => {
@@ -45,6 +69,7 @@ const Profile = () => {
             image: imageString,
           };
           setUser(updatedUser);
+          setPh(imageString);
         };
         reader.readAsDataURL(file);
       };
@@ -66,7 +91,7 @@ const Profile = () => {
       return (
         <>
           <div className="profile-photo" onClick={handlePhotoChange}>
-            <img src={user.image} alt="Profile" />
+            <img src={ph} alt="Profile" />
           </div>
           <div className="profile-details">
             <div className="profile-field">
@@ -90,6 +115,7 @@ const Profile = () => {
               <span className="profile-label">Date of Birth:</span>
               <span>{user.dateOfBirth}</span>
             </div>
+            { PickRole().isSeller===true &&(
             <div className="profile-field">
               <span className="profile-label">Verification Status:</span>
               {user.verified===0 &&(
@@ -104,6 +130,7 @@ const Profile = () => {
               )}
               
             </div>
+    )}
 
             <div className="profile-field">
               <span className="profile-label">Address:</span>

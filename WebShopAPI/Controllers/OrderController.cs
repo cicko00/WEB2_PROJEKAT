@@ -1,22 +1,32 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using WebShopAPI.Dto;
 using WebShopAPI.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebShopAPI.Controllers
 {
     [Route("api/orders")]
     [ApiController]
+    
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
+        private readonly IConfiguration _configuration;
 
-        public OrderController(IOrderService orderService)
+        public OrderController(IOrderService orderService, IConfigurationSection config)
         {
             _orderService = orderService;
+           _configuration=config;
         }
+      
+
 
         [HttpGet("all")]
+        
         public IActionResult GetAll()
         {
             return Ok(_orderService.GetOrders());
@@ -25,13 +35,15 @@ namespace WebShopAPI.Controllers
         [HttpGet("user/{userid}")]
         public IActionResult GetUserProducts(int userid)
         {
+            
             return Ok(_orderService.GetOrders(userid));
+            
+            
         }
 
         [HttpGet("seller/{userid}")]
         public IActionResult GetSellerProducts(int userid)
         {
-           
 
             return Ok(_orderService.GetOrdersSeller(userid));
         }
@@ -45,7 +57,11 @@ namespace WebShopAPI.Controllers
         [HttpPost]
         public IActionResult CreateOrder([FromBody] OrderDto order)
         {
-            return Ok(_orderService.AddOrder(order));
+           
+            
+                return Ok(_orderService.AddOrder(order));
+            
+           
         }
 
         [HttpPost("{st}/{ot}")]
@@ -57,17 +73,23 @@ namespace WebShopAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult ChangeOrder(int id, [FromBody] OrderDto order)
         {
-            return Ok(_orderService.UpdateOrder(id, order));
+           
+                return Ok(_orderService.UpdateOrder(id, order));
+            
+          
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteOrder(int id)
         {
-            if(_orderService.DeleteOrder(id))
-            {
+            
+                if (_orderService.DeleteOrder(id))
+                {
+                    return Ok(_orderService.DeleteOrder(id));
+                }
+
                 return Ok(_orderService.DeleteOrder(id));
-            }
-            return Ok(_orderService.DeleteOrder(id));
+          
         }
     }
 }

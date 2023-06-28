@@ -16,7 +16,13 @@ const Home = ({ isLoggedIn,setChartItems,chartItems }) => {
   }, []);
 
   const fetchArticles = async () => {
+    
     try {
+      if(isLoggedIn===true){
+        console.log(JSON.parse(sessionStorage["Token"]));
+        console.log(JSON.parse(sessionStorage["User"]));
+      axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
+      }
       const response = await axios.get('https://localhost:7108/api/products/all');
       const fetchedArticles = response.data;
       
@@ -61,22 +67,36 @@ const Home = ({ isLoggedIn,setChartItems,chartItems }) => {
   };
 
   const addToChart = (product) => {
-    if(selectedQuantity===0){
+    if (selectedQuantity === 0) {
       return;
     }
-    const productToAdd = {
-      ...product,
-      quantity: selectedQuantity,
-    };
-
-    
-    selectedProduct.quantity=selectedQuantity;
-    setChartItems((prevItems)=>[...prevItems,selectedProduct]
-      
-    )
+  
+    const existingItem = chartItems.find((item) => item.productId === product.productId);
+  
+    if (existingItem) {
+      // If the item already exists in the chart, update its quantity
+      const updatedItem = {
+        ...existingItem,
+        quantity: existingItem.quantity + selectedQuantity,
+      };
+  
+      setChartItems((prevItems) =>
+        prevItems.map((item) => (item.productId === product.productId ? updatedItem : item))
+      );
+    } else {
+      // If the item is not in the chart, add it as a new item
+      const newItem = {
+        ...product,
+        quantity: selectedQuantity,
+      };
+  
+      setChartItems((prevItems) => [...prevItems, newItem]);
+    }
+  
     // Implement your logic to add the product to the chart
-    console.log('Product added to chart:', productToAdd);
+    console.log('Product added to chart:', product);
   };
+  
 
   const closeProductDetails = () => {
     setSelectedProduct(null);

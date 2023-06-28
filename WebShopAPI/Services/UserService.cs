@@ -65,7 +65,7 @@ namespace WebShopAPI.Services
                 claims.Add(new Claim("LastName", user.LastName));
                 claims.Add(new Claim("Password", user.Password));
                 claims.Add(new Claim("DateOfBirth",Convert.ToString( user.DateOfBirth)));
-                claims.Add(new Claim("Photo", user.Image));
+               
                 claims.Add(new Claim("Address", user.Address));
                 claims.Add(new Claim("Verified",Convert.ToString(user.Verified)));
 
@@ -197,7 +197,7 @@ namespace WebShopAPI.Services
             User user = _dbContext.Users.Find(id);
             if (newUserData.Password == user.Password)
             {
-                if(newUserData.UserId != user.UserId)
+                if(newUserData.UserName != user.UserName)
                 {
 
                     try
@@ -207,13 +207,13 @@ namespace WebShopAPI.Services
                     }
                     catch (Exception exc)
                     {
-                        user.UserId= newUserData.UserId;
+                        user.UserName= newUserData.UserName;
                     }
                 }
                
-                user.UserName = newUserData.UserName;
+               
                 user.Email = newUserData.Email;
-                user.Password = newUserData.Password;
+               
                 user.FirstName = newUserData.FirstName;
                 user.LastName = newUserData.LastName;
                 user.DateOfBirth = newUserData.DateOfBirth;
@@ -232,6 +232,10 @@ namespace WebShopAPI.Services
                     {
                         user.Password = BCrypt.Net.BCrypt.HashPassword(newUserData.Password);
                     }
+                }
+                else
+                {
+                    return null;
                 }
             }
            
@@ -253,6 +257,13 @@ namespace WebShopAPI.Services
             _dbContext.SaveChanges();
 
             return _mapper.Map<UserDto>(user);
+        }
+
+        public string getPhoto(int id)
+        {
+            User user = _dbContext.Users.Find(id);
+            if(user.Image==null) { return ""; }
+            return user.Image;
         }
     }
 }

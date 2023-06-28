@@ -114,6 +114,10 @@ const Register = ({handleLogin}) => {
     
   };
 
+  const getPhoto = async (id) => {
+    return await axios.get('https://localhost:7108/api/users/photo/'+Number(id));
+  };
+
   const photoFrameRef = useRef(null);
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
@@ -164,6 +168,7 @@ const Register = ({handleLogin}) => {
       }
       else{
         handleLogin();
+       
         alert("USPESNA REGISTRACIJA!");
         navigate('/');
       }

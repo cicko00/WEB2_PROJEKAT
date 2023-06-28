@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import './Styles/ChangeProfileInfo.css';
 import axios from 'axios';
+
 const ChangePassword = ({ onSave, onCancel,user }) => {
+  axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [repeatNewPassword, setRepeatNewPassword] = useState('');
@@ -39,6 +41,7 @@ const ChangePassword = ({ onSave, onCancel,user }) => {
       try{
         console.log(user.UserId);
         updatedUser.dateOfBirth=(new Date(updatedUser.dateOfBirth)).toISOString();
+        axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
       await axios.put('https://localhost:7108/api/users/'+user.userId, updatedUser);
       }
       catch(error){

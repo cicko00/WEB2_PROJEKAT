@@ -1,60 +1,94 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using WebShopAPI.Dto;
 using WebShopAPI.Interfaces;
 using WebShopAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebShopAPI.Controllers
 {
     [Route("api/products")]
     [ApiController]
+    
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
-        public ProductController(IProductService productService)
+        private readonly IConfiguration _configuration;
+        public ProductController(IProductService productService, IConfiguration config)
         {
             _productService = productService;
+           _configuration= config;
         }
 
-        
+
+
+
+
+
 
 
         [HttpGet("all")]
+
+        [Authorize]
         public IActionResult GetAll()
         {
-            return Ok(_productService.GetProducts());
+           
+                return Ok(_productService.GetProducts());
+            
+            
         }
 
 
 
         [HttpGet("order/{orderid}")]
+        
         public IActionResult GetAll(int orderid)
         {
-            return Ok(_productService.GetProducts(orderid));
+           
+                return Ok(_productService.GetProducts(orderid));
+            
+           
+                
+            
         }
 
         [HttpGet("order/seller/{orderid}")]
+       
         public IActionResult GetAllSeller(int orderid)
         {
-            return Ok(_productService.GetProducts(orderid));
+           
+                return Ok(_productService.GetProducts(orderid));
+            
+            
         }
 
         [HttpGet("{id}")]
+      
         public IActionResult Get(int id)
         {
             return Ok(_productService.GetById(id));
         }
 
         [HttpGet("seller/{userId}")]
+        
         public IActionResult GetAllSellerProducts(int userId)
         {
-            return Ok(_productService.GetAllSellerProducts(userId));
+           
+                return Ok(_productService.GetAllSellerProducts(userId));
+            
         }
 
         [HttpPost]
         public IActionResult CreateProduct([FromBody] ProductDto product)
         {
-            return Ok(_productService.AddProduct(product));
+           
+            
+                return Ok(_productService.AddProduct(product));
+            
+           
         }
 
         [HttpPut("{id}")]
@@ -70,15 +104,18 @@ namespace WebShopAPI.Controllers
         {
             return Ok(_productService.UpdateProductQuantinty(id));
         }
-
+        
         [HttpDelete("{id}")]
         public IActionResult DeleteProduct(int id)
         {
-            if (_productService.DeleteProduct(id))
-            {
+           
+                if (_productService.DeleteProduct(id))
+                {
+                    return Ok(_productService.DeleteProduct(id));
+                }
                 return Ok(_productService.DeleteProduct(id));
-            }
-            return Ok(_productService.DeleteProduct(id));
+            
+            
         }
     }
 }
