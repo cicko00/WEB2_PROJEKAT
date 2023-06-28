@@ -1,0 +1,14 @@
+C:\git\web2\WEB2_PROJEKAT\Services\obj\Debug\net6.0\Services.csproj.AssemblyReference.cache
+C:\git\web2\WEB2_PROJEKAT\Services\obj\Debug\net6.0\Services.GeneratedMSBuildEditorConfig.editorconfig
+C:\git\web2\WEB2_PROJEKAT\Services\obj\Debug\net6.0\Services.AssemblyInfoInputs.cache
+C:\git\web2\WEB2_PROJEKAT\Services\obj\Debug\net6.0\Services.AssemblyInfo.cs
+C:\git\web2\WEB2_PROJEKAT\Services\obj\Debug\net6.0\Services.csproj.CoreCompileInputs.cache
+C:\git\web2\WEB2_PROJEKAT\Services\bin\Debug\net6.0\Services.deps.json
+C:\git\web2\WEB2_PROJEKAT\Services\bin\Debug\net6.0\Services.runtimeconfig.json
+C:\git\web2\WEB2_PROJEKAT\Services\bin\Debug\net6.0\Services.dll
+C:\git\web2\WEB2_PROJEKAT\Services\bin\Debug\net6.0\Services.pdb
+C:\git\web2\WEB2_PROJEKAT\Services\obj\Debug\net6.0\Services.dll
+C:\git\web2\WEB2_PROJEKAT\Services\obj\Debug\net6.0\refint\Services.dll
+C:\git\web2\WEB2_PROJEKAT\Services\obj\Debug\net6.0\Services.pdb
+C:\git\web2\WEB2_PROJEKAT\Services\obj\Debug\net6.0\Services.genruntimeconfig.cache
+C:\git\web2\WEB2_PROJEKAT\Services\obj\Debug\net6.0\ref\Services.dll

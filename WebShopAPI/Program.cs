@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Services.Infrastructure;
+using Services.IServices;
+using Services.Mapping;
+using Services.Services;
 using System.Text;
-using WebShopAPI.Infrastructure;
-using WebShopAPI.Interfaces;
-using WebShopAPI.Mapping;
-using WebShopAPI.Services;
+
 
 string _cors = "cors";
 var builder = WebApplication.CreateBuilder(args);

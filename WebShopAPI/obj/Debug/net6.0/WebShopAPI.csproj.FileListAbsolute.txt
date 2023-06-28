@@ -268,3 +268,5 @@ C:\git\web2\WEB2_PROJEKAT\WebShopAPI\obj\Debug\net6.0\refint\WebShopAPI.dll
 C:\git\web2\WEB2_PROJEKAT\WebShopAPI\obj\Debug\net6.0\WebShopAPI.pdb
 C:\git\web2\WEB2_PROJEKAT\WebShopAPI\obj\Debug\net6.0\WebShopAPI.genruntimeconfig.cache
 C:\git\web2\WEB2_PROJEKAT\WebShopAPI\obj\Debug\net6.0\ref\WebShopAPI.dll
+C:\git\web2\WEB2_PROJEKAT\WebShopAPI\bin\Debug\net6.0\Services.dll
+C:\git\web2\WEB2_PROJEKAT\WebShopAPI\bin\Debug\net6.0\Services.pdb

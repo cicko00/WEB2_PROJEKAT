@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using WebShopAPI.Dto;
-using WebShopAPI.Interfaces;
-using WebShopAPI.Services;
+
 using Microsoft.AspNetCore.Authorization;
+using Services.IServices;
+using Services.DTO;
 
 namespace WebShopAPI.Controllers
 {
