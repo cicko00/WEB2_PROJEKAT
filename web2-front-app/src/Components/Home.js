@@ -16,35 +16,41 @@ const Home = ({ isLoggedIn,setChartItems,chartItems }) => {
   }, []);
 
   const fetchArticles = async () => {
-    
     try {
-      if(isLoggedIn===true){
+      if (isLoggedIn === true) {
         console.log(JSON.parse(sessionStorage["Token"]));
         console.log(JSON.parse(sessionStorage["User"]));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(sessionStorage["Token"])}`;
       }
+  
       const response = await axios.get('https://localhost:7122/api/products/all');
       const fetchedArticles = response.data;
-      
+  
       // Decrease quantity of products in the chart
-      const updatedArticles = fetchedArticles.map((article) => {
-        const chartItem = chartItems.find((item) => item.productId === article.productId);
-        if (chartItem) {
-          // Decrease the quantity by the amount already in the chart
-          const updatedQuantity = article.quantity - chartItem.quantity;
-          return {
-            ...article,
-            quantity: updatedQuantity >= 0 ? updatedQuantity : 0,
-          };
-        }
-        return article;
-      });
+      const updatedArticles = await Promise.all(
+        fetchedArticles.map(async (article) => {
+          const chartItem = chartItems.find((item) => item.productId === article.productId);
+          if (chartItem) {
+            // Decrease the quantity by the amount already in the chart
+            const updatedQuantity = article.quantity - chartItem.quantity;
+            article.quantity = updatedQuantity >= 0 ? updatedQuantity : 0;
+          }
+  
+          // Fetch sellerName for the item
+          const sellerResponse = await axios.get(`https://localhost:7122/api/users/productSellerName/${article.sellerId}`);
+          const sellerName = sellerResponse.data;
+          article.sellerName = sellerName;
+  
+          return article;
+        })
+      );
   
       setArticles(updatedArticles);
     } catch (error) {
       console.error(error);
     }
   };
+  
   
 
   const filterArticles = (category) => {

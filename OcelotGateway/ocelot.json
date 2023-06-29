@@ -234,7 +234,7 @@
     {
 
 
-      "DownstreamPathTemplate": "/api/orders/",
+      "DownstreamPathTemplate": "/api/orders",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -242,7 +242,7 @@
           "Port": 7108
         }
       ],
-      "UpstreamPathTemplate": "/api/orders/",
+      "UpstreamPathTemplate": "/api/orders",
       "UpstreamHttpMethod": [ "Post" ]
 
 
@@ -282,7 +282,7 @@
 
     },
 
-    
+
 
 
     //
@@ -314,6 +314,19 @@
         }
       ],
       "UpstreamPathTemplate": "/api/users/seller/all",
+      "UpstreamHttpMethod": [ "GET" ]
+
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/productSellerName/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7190
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/productSellerName/{id}",
       "UpstreamHttpMethod": [ "GET" ]
 
     },

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Services.DTO;
 using Services.Infrastructure;
+using Services.IRepository;
 using Services.IServices;
 using Services.Models;
 using System;
@@ -18,63 +19,53 @@ namespace Services.Services
         private readonly IMapper _mapper;
         private readonly IConfigurationSection _secretKey;
         private readonly WebShopDbContext _dbContext;
+        private readonly IProductRepository _productrepository;
 
-        public ProductService(IMapper mapper, IConfiguration config, WebShopDbContext dbContext)
+        public ProductService(IMapper mapper, IConfiguration config, WebShopDbContext dbContext,IProductRepository pr)
         {
             _mapper = mapper;
             _secretKey = config.GetSection("SecretKey");
             _dbContext = dbContext;
+            _productrepository= pr;
         }
 
         public ProductDto AddProduct(ProductDto newProduct)
         {
             Product product = _mapper.Map<Product>(newProduct);
-            _dbContext.Products.Add(product);
-            _dbContext.SaveChanges();
-            return _mapper.Map<ProductDto>(product);
+           return _productrepository.AddProduct(product);
         }
         public ProductDto UpdateProductQuantinty(int id)
         {
-            Product product = _dbContext.Products.Find(id);
+            Product product = _productrepository.getSingleProductProduct(id);
             product.Quantity++;
             ProductDto productDto = _mapper.Map<ProductDto>(product);
 
-            _dbContext.SaveChanges();
+            _productrepository.UpdateProduct(id, product);
             return productDto;
         }
         public bool DeleteProduct(int id)
         {
-            try
-            {
-                Product product = _dbContext.Products.Find(id);
-                _dbContext.Products.Remove(product);
-                _dbContext.SaveChanges();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+           return _productrepository.DeleteProduct(id);
 
         }
         public List<ProductDto> GetAllSellerProducts(int userId)
         {
 
             List<ProductDto> p = new List<ProductDto>();
-            p = _mapper.Map<List<ProductDto>>(_dbContext.Products.ToList().Where(x => x.SellerId == userId));
+            p = _productrepository.GetAllProductsSeller(userId);
             return p;
 
 
         }
         public ProductDto GetById(int id)
         {
-            return _mapper.Map<ProductDto>(_dbContext.Products.Find(id));
+            return _productrepository.getSingleProduct(id);
         }
 
         public List<ProductDto> GetProducts()
         {
             List<ProductDto> lp = new List<ProductDto>();
-            foreach (ProductDto p in _mapper.Map<List<ProductDto>>(_dbContext.Products.ToList()))
+            foreach (ProductDto p in _productrepository.GetAllProducts())
             {
               //  p.SellerName = _mapper.Map<UserDto>(_dbContext.Users.ToList().Find(x => x.UserId == p.SellerId)).UserName;
                 lp.Add(p);
@@ -84,26 +75,17 @@ namespace Services.Services
 
         public List<ProductDto> GetProducts(int orderid)
         {
-            var products = _dbContext.Products
-                .Where(product => product.Orders.Any(order => order.OrderId == orderid))
-                .ToList();
+          
 
-            return _mapper.Map<List<ProductDto>>(products);
+            return _productrepository.getProductsbyOrder(orderid);
         }
 
 
         public ProductDto UpdateProduct(int id, ProductDto newProductData)
         {
-            Product product = _dbContext.Products.Find(id);
-            product.Name = newProductData.Name;
-            product.Description = newProductData.Description;
-            product.Price = newProductData.Price;
-            product.Quantity = newProductData.Quantity;
-            product.Image = newProductData.Image;
-            product.Category = newProductData.Category;
-            _dbContext.SaveChanges();
+           
 
-            return _mapper.Map<ProductDto>(product);
+            return _productrepository.UpdateProduct(id, newProductData);
         }
 
         public List<ProductDto> GetProductsSeller(int orderid)

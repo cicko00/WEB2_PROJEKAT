@@ -18,5 +18,6 @@ namespace Services.IServices
         string getPhoto(int id);
 
         string Login(UserCredentialsDto credentialsDto);
+        string getProductSellerName(int id);
     }
 }

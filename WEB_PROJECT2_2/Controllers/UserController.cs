@@ -102,5 +102,12 @@ namespace WEB_PROJECT2_2.Controllers
             return Ok(_userService.getPhoto(id));
         }
 
+        [HttpGet("productSellerName/{id}")]
+        public IActionResult getProductSellerName(int id)
+        {
+
+            return Ok(_userService.getProductSellerName(id));
+        }
+
     }
 }

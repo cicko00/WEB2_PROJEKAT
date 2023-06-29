@@ -67,6 +67,7 @@ const ActiveOrders = () => {
     const days = Math.floor(duration.asDays());
     const hours = duration.hours();
     const minutes = duration.minutes();
+    const seconds= duration.seconds()
 
     return `${days} days ${hours} hours ${minutes} minutes`;
   };

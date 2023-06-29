@@ -13,6 +13,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Services.IRepository;
 
 namespace Services.Services
 {
@@ -21,26 +22,30 @@ namespace Services.Services
         private readonly IMapper _mapper;
         private readonly IConfigurationSection _secretKey;
         private readonly UsersDbContext _dbContext;
+        private readonly IUserRepository _userreposotory;
 
 
-        public UserService(IMapper mapper, IConfiguration config, UsersDbContext dbContext)
+        public UserService(IMapper mapper, IConfiguration config, UsersDbContext dbContext,IUserRepository iu)
         {
             _mapper = mapper;
             _dbContext = dbContext;
             _secretKey = config.GetSection("SecretKey");
+            _userreposotory = iu;
+            _dbContext=dbContext;
         }
 
         public string Login(UserCredentialsDto credentialsDto)
         {
-            UserDto user = null;
-            try
-            {
-                user = _mapper.Map<List<UserDto>>(_dbContext.Users.ToList()).First(x => x.Email == credentialsDto.Email);
-            }
-            catch (Exception ex)
+            UserDto user;
+           
+                user = _userreposotory.GetUserByLogin(credentialsDto.Email);
+            
+            if(user==null)
             {
                 return "!";
             }
+
+           
 
 
 
@@ -117,7 +122,7 @@ namespace Services.Services
                     usr.Email = newUser.Email;
                     usr.Password = " ";
 
-                    foreach (UserDto u in _mapper.Map<List<UserDto>>(_dbContext.Users.ToList()))
+                    foreach (UserDto u in _userreposotory.GetAllUsers())
                     {
                         if (newUser.Email == u.Email)
                         {
@@ -132,9 +137,7 @@ namespace Services.Services
                         }
                     }
                     newUser.Password = BCrypt.Net.BCrypt.HashPassword(newUser.Password);
-                    User userr = _mapper.Map<User>(newUser);
-                    _dbContext.Users.Add(userr);
-                    _dbContext.SaveChanges();
+                   _userreposotory.AddNewUser(newUser);
                     return Login(usr);
 
                 }
@@ -145,7 +148,7 @@ namespace Services.Services
             }
             else
             {
-                foreach (UserDto u in _mapper.Map<List<UserDto>>(_dbContext.Users.ToList()))
+                foreach (UserDto u in _userreposotory.GetAllUsers())
                 {
                     if (BCrypt.Net.BCrypt.Verify(newUser.Password, u.Password))
                     {
@@ -162,59 +165,43 @@ namespace Services.Services
                 }
             }
             newUser.Password = BCrypt.Net.BCrypt.HashPassword(newUser.Password);
-            User user = _mapper.Map<User>(newUser);
-            _dbContext.Users.Add(user);
-            _dbContext.SaveChanges();
+            _userreposotory.AddNewUser(newUser);
             return "OK";
 
         }
 
         public bool DeleteUser(int id)
         {
-            try
-            {
-                User user = _dbContext.Users.Find(id);
-                _dbContext.Users.Remove(user);
-                _dbContext.SaveChanges();
-                return true;
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
+           return _userreposotory.DeleteUser(id);
         }
 
         public UserDto GetById(int id)
         {
-            return _mapper.Map<UserDto>(_dbContext.Users.Find(id));
+            return _userreposotory.GetUserById(id);
         }
 
         public List<UserDto> GetUsers()
         {
-            return _mapper.Map<List<UserDto>>(_dbContext.Users.Where(x => x.UserType == "seller").ToList());
+            return _userreposotory.GetUsersSellers();
         }
 
         public UserDto UpdateUser(int id, UserDto newUserData)
         {
 
-            User user = _dbContext.Users.Find(id);
+            User user = _userreposotory.GetUserByIdUser(id);
             if (newUserData.Password == user.Password)
             {
                 if (newUserData.UserName != user.UserName)
                 {
 
-                    try
-                    {
-                        UserDto usr = _mapper.Map<UserDto>(_dbContext.Users.ToList().First(x => x.UserName == newUserData.UserName));
-                        return null;
-                    }
-                    catch (Exception exc)
-                    {
-                        user.UserName = newUserData.UserName;
-                    }
+                    
+                        UserDto usr = _userreposotory.GetUserByUsername(newUserData.UserName);
+                        if(usr != null) { return null; }
+                    
+                    
                 }
 
-
+                user.UserName= newUserData.UserName;
                 user.Email = newUserData.Email;
 
                 user.FirstName = newUserData.FirstName;
@@ -227,7 +214,7 @@ namespace Services.Services
             {
                 if (BCrypt.Net.BCrypt.Verify(newUserData.OldPassword, user.Password))
                 {
-                    if (_mapper.Map<List<UserDto>>(_dbContext.Users.ToList()).Any(usr => usr.Password == BCrypt.Net.BCrypt.HashPassword(newUserData.Password)))
+                    if (_userreposotory.PasswordExists(newUserData.Password))
                     {
                         return null;
                     }
@@ -242,8 +229,8 @@ namespace Services.Services
                 }
             }
 
-
-            _dbContext.SaveChanges();
+            _userreposotory.UpdateUser(id,user);
+            
 
             return _mapper.Map<UserDto>(user);
         }
@@ -255,18 +242,23 @@ namespace Services.Services
 
 
 
-            User user = _dbContext.Users.Find(id);
+            User user = _userreposotory.GetUserByIdUser(id);
             user.Verified = value;
-            _dbContext.SaveChanges();
+           _userreposotory.UpdateUser(id,user);
 
             return _mapper.Map<UserDto>(user);
         }
 
         public string getPhoto(int id)
         {
-            User user = _dbContext.Users.Find(id);
+            User user =_userreposotory.GetUserByIdUser(id);
             if (user.Image == null) { return ""; }
             return user.Image;
+        }
+
+        public string getProductSellerName(int id)
+        {
+            return _userreposotory.getProductSellerName(id);
         }
     }
 }

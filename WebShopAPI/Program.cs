@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Services.Infrastructure;
+using Services.IRepository;
 using Services.IServices;
 using Services.Mapping;
+using Services.Repository;
 using Services.Services;
 using System.Text;
 
@@ -82,6 +84,8 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IProductRepository,ProductRepository>();
 
 builder.Services.AddDbContext<WebShopDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("WebShopDatabase")));
 var mapperConfig = new MapperConfiguration(mc =>

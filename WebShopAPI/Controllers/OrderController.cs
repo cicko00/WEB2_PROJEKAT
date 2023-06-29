@@ -18,7 +18,7 @@ namespace WebShopAPI.Controllers
         private readonly IOrderService _orderService;
         private readonly IConfiguration _configuration;
 
-        public OrderController(IOrderService orderService, IConfigurationSection config)
+        public OrderController(IOrderService orderService, IConfiguration config)
         {
             _orderService = orderService;
            _configuration=config;
@@ -27,7 +27,6 @@ namespace WebShopAPI.Controllers
 
 
         [HttpGet("all")]
-        
         public IActionResult GetAll()
         {
             return Ok(_orderService.GetOrders());

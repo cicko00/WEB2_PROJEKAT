@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Services.DTO;
 using Services.Infrastructure;
+using Services.IRepository;
 using Services.IServices;
 using Services.Models;
 using System;
@@ -18,18 +19,22 @@ namespace Services.Services
         private readonly IMapper _mapper;
         private readonly IConfigurationSection _secretKey;
         private readonly WebShopDbContext _dbContext;
+        private readonly IOrderRepository _orderRepository;
+        private readonly IProductRepository _productRepository;
 
-        public OrderService(IMapper mapper, IConfiguration config, WebShopDbContext dbContext)
+        public OrderService(IMapper mapper, IConfiguration config, WebShopDbContext dbContext,IOrderRepository os, IProductRepository ps)
         {
             _mapper = mapper;
             _secretKey = config.GetSection("SecretKey");
             _dbContext = dbContext;
+            _orderRepository = os;
+            _productRepository = ps;
         }
 
         public string AddOrder(OrderDto newOrder)
         {
             List<Product> productsFromReact = _mapper.Map<List<Product>>(newOrder.Products);
-            List<Product> productsFromDatabase = _dbContext.Products.ToList();
+            List<Product> productsFromDatabase = _productRepository.GetAllProductsProducts();
             List<OrderProduct> orderProducts = new List<OrderProduct>();
 
             foreach (Product productReact in productsFromReact)
@@ -43,9 +48,8 @@ namespace Services.Services
                     }
                     else
                     {
-                        matchingProduct.Quantity -= productReact.Quantity;
-                        // Update the quantity in the database
-                        _dbContext.Entry(matchingProduct).Property("Quantity").IsModified = true;
+                        _productRepository.Decreasequantity(matchingProduct.ProductId, productReact.Quantity);
+                       
                         orderProducts.Add(new OrderProduct() { ProductId = matchingProduct.ProductId, Product = matchingProduct, Quantity = productReact.Quantity });
                     }
                 }
@@ -86,7 +90,7 @@ namespace Services.Services
         {
             try
             {
-                List<Order> orders = _dbContext.Orders.Include(o => o.OrderProducts).ToList();
+                List<Order> orders = _orderRepository.getAllOrders();
                 Order order = orders.Find(o => o.OrderId == id);
                 if (order == null)
                 {
@@ -95,12 +99,11 @@ namespace Services.Services
 
                 foreach (OrderProduct op in order.OrderProducts.ToList())
                 {
-                    Product p = _mapper.Map<Product>(_dbContext.Products.Find(op.ProductId));
+                    Product p = _productRepository.getSingleProductProduct(op.ProductId);
                     p.Quantity += op.Quantity;
-                    _dbContext.SaveChanges();
+                    _productRepository.UpdateProduct(p.ProductId,p);
                 }
-                _dbContext.Orders.Remove(order);
-                _dbContext.SaveChanges();
+                _orderRepository.DeleteOrder(id);
                 return true;
             }
             catch (Exception ex)
@@ -112,24 +115,24 @@ namespace Services.Services
 
         public OrderDto GetById(int id)
         {
-            return _mapper.Map<OrderDto>(_dbContext.Orders.Find(id));
+            return _orderRepository.getOrder(id);
 
         }
 
         public List<OrderDto> GetOrders()
         {
-            return _mapper.Map<List<OrderDto>>(_dbContext.Orders.ToList());
+            return _mapper.Map<List<OrderDto>>(_orderRepository.getAllOrders());
         }
 
         public List<OrderDto> GetOrders(int userid)
         {
-            List<OrderDto> orders = _mapper.Map<List<OrderDto>>(_dbContext.Orders.ToList()).Where(x => x.UserBuyerId == userid).ToList();
+            List<OrderDto> orders = _orderRepository.getAllOrdersBuyer(userid);
             return orders;
         }
 
         public List<OrderDto> GetOrdersSeller(int userid)
         {
-            var orders = _dbContext.Orders.Where(order => order.OrderProducts.Any(product => product.Product.SellerId == userid)).ToList();
+            var orders = _orderRepository.getAllOrdersSeller(userid);
 
             return _mapper.Map<List<OrderDto>>(orders);
         }
